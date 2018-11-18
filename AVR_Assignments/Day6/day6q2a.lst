@@ -1,0 +1,174 @@
+   1               		.file	"day6q2a.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	__vector_1
+  73               	__vector_1:
+   1:day6q2a.c     **** // ***********************************************************
+   2:day6q2a.c     **** // Project:
+   3:day6q2a.c     **** // Author:
+   4:day6q2a.c     **** // Module description:
+   5:day6q2a.c     **** // ***********************************************************
+   6:day6q2a.c     **** 
+   7:day6q2a.c     **** #include <avr\io.h>              // Most basic include files
+   8:day6q2a.c     **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:day6q2a.c     **** #include <avr\signal.h>          // here
+  10:day6q2a.c     **** #define BV(x)  (1<<x)
+  11:day6q2a.c     **** #define BC(x) (0<<x)
+  12:day6q2a.c     **** // Define here the global static variables
+  13:day6q2a.c     **** //
+  14:day6q2a.c     **** int My_global;
+  15:day6q2a.c     **** 
+  16:day6q2a.c     **** // Interrupt handler example for INT0
+  17:day6q2a.c     **** //
+  18:day6q2a.c     **** ISR(        INT0_vect )
+  19:day6q2a.c     **** {
+  74               	 r0,__SREG__
+  75               		push r0
+  76               		clr __zero_reg__
+  77 0000 1F92      		push r24
+  78 0002 0F92      		push r26
+  79 0004 0FB6      		push r27
+  80 0006 0F92      		push r30
+  81 0008 1124      		push r31
+  82 000a 8F93      		push r29
+  83 000c AF93      		push r28
+  84 000e BF93      		in r28,__SP_L__
+  85 0010 EF93      		in r29,__SP_H__
+  86 0012 FF93      	/* prologue: Signal */
+  87 0014 DF93      	/* frame size = 0 */
+  89 0018 CDB7      	.LM1:
+  90 001a DEB7      		ldi r26,lo8(50)
+  91               		ldi r27,hi8(50)
+  92               		ldi r30,lo8(50)
+  20:day6q2a.c     **** //	PORTD ^= (1<<PD4);
+  21:day6q2a.c     **** PORTD=~(PORTD);
+  93               	= 0 */
+  95 001c A2E3      	.LM1:
+  96 001e B0E0      		ldi r26,lo8(50)
+  97 0020 E2E3      		ldi r27,hi8(50)
+  98 0022 F0E0      		ldi r30,lo8(50)
+  99 0024 8081      		ldi r31,hi8(50)
+ 100 0026 8095      		ld r24,Z
+ 101 0028 8C93      		com r24
+ 102               		st X,r24
+  22:day6q2a.c     **** }
+ 103               	lo8(50)
+ 104               		ldi r27,hi8(50)
+ 105 002a CF91      		ldi r30,lo8(50)
+ 106 002c DF91      		ldi r31,hi8(50)
+ 107 002e FF91      		ld r24,Z
+ 108 0030 EF91      		com r24
+ 109 0032 BF91      		st X,r24
+ 110 0034 AF91      	/* epilogue start */
+ 112 0038 0F90      	.LM2:
+ 113 003a 0FBE      		pop r28
+ 114 003c 0F90      		pop r29
+ 115 003e 1F90      		pop r31
+ 116 0040 1895      		pop r30
+ 117               		pop r27
+ 118               		pop r26
+ 119               		pop r24
+ 120               		pop r0
+ 121               		out __SREG__,r0
+ 122               		pop r0
+  23:day6q2a.c     **** 
+  24:day6q2a.c     **** // It is recommended to use this coding style to
+  25:day6q2a.c     **** // follow better the mixed C-assembly code in the
+  26:day6q2a.c     **** // Program Memory window
+  27:day6q2a.c     **** //
+  28:day6q2a.c     **** 
+  29:day6q2a.c     **** 
+  30:day6q2a.c     **** // ***********************************************************
+  31:day6q2a.c     **** // Main program
+  32:day6q2a.c     **** //
+  33:day6q2a.c     **** int main(void) {
+ 123               	p r31
+ 124               		pop r30
+ 125               		pop r27
+ 126 0042 DF93      		pop r26
+ 127 0044 CF93      		pop r24
+ 128 0046 CDB7      		pop r0
+ 129 0048 DEB7      		out __SREG__,r0
+ 130               		pop r0
+ 131               		pop __zero_reg__
+  34:day6q2a.c     ****  	MCUCR |= BV(SE)| BV(ISC01);//enable sleep and falling edge
+ 132               	 r27
+ 133               		pop r26
+ 134 004a A5E5      		pop r24
+ 135 004c B0E0      		pop r0
+ 136 004e E5E5      		out __SREG__,r0
+ 137 0050 F0E0      		pop r0
+ 138 0052 8081      		pop __zero_reg__
+ 139 0054 8268      		reti
+  35:day6q2a.c     ****  	DDRD |= BV(PD4)| BC(PD2); //PD4 output,PD2input
+ 141               	EG__,r0
+ 142               		pop r0
+ 143 0058 A1E3      		pop __zero_reg__
+ 144 005a B0E0      		reti
+ 146 005e F0E0      	.Lscope1:
+ 148 0062 8061      	.global	main
+  36:day6q2a.c     ****  	PORTD |= BV(PD2); //pullup PD2	
+ 150               	stabs	"main:F(0,1)",36,0,0,main
+ 151               	.global	main
+ 153 0068 B0E0      	main:
+ 155 006c F0E0      	.LM3:
+ 156 006e 8081      	.LFBB2:
+ 157 0070 8460      		push r29
+ 158 0072 8C93      		push r28
+  37:day6q2a.c     **** 	GICR |= BV(INT0);  //INT0 enable
+ 160               	.LM3:
+ 161 0074 ABE5      	.LFBB2:
+ 162 0076 B0E0      		push r29
+ 163 0078 EBE5      		push r28
+ 164 007a F0E0      		in r28,__SP_L__
+ 165 007c 8081      		in r29,__SP_H__
+ 166 007e 8064      	/* prologue: function */
+ 167 0080 8C93      	/* frame size = 0 */
+  38:day6q2a.c     **** 	sei();
+ 168               	29,__SP_H__
+ 169               	/* prologue: function */
+ 170               	/* frame size = 0 */
+ 172 0082 7894      	.LM4:
+ 173               		ldi r26,lo8(85)
+ 174               		ldi r27,hi8(85)
+ 175               		ldi r30,lo8(85)
+  39:day6q2a.c     **** 
+  40:day6q2a.c     **** 	
+  41:day6q2a.c     ****    while(1) {             // Infinite loop; define here the
+  42:day6q2a.c     ****      asm("sleep");      // system behaviour
+ 176               	:
+ 177               		ldi r26,lo8(85)
+ 178               		ldi r27,hi8(85)
+ 179               		ldi r30,lo8(85)
+ 180 0084 8895      		ldi r31,hi8(85)
+ 181               		ld r24,Z
+ 182               		ori r24,lo8(-126)
+ 183 0086 00C0      		st X,r24
+ 185               	.LM5:
+ 186               		ldi r26,lo8(49)
+ 187               		ldi r27,hi8(49)
+ 188               		ldi r30,lo8(49)
+ 189               		ldi r31,hi8(49)
+DEFINED SYMBOLS
+                            *ABS*:00000000 day6q2a.c
+C:\users\batch2\Temp/ccCz5h2e.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccCz5h2e.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccCz5h2e.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccCz5h2e.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccCz5h2e.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccCz5h2e.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccCz5h2e.s:73     .text:00000000 __vector_1
+C:\users\batch2\Temp/ccCz5h2e.s:122    .text:00000042 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

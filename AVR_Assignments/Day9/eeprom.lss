@@ -1,0 +1,279 @@
+
+eeprom.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000186  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000002  00800060  00000186  000001fa  2**0
+                  ALLOC
+  2 .stab         00000498  00000000  00000000  000001fc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      000006c2  00000000  00000000  00000694  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2d c0       	rjmp	.+90     	; 0x5e <__vector_1>
+   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	e6 e8       	ldi	r30, 0x86	; 134
+  3a:	f1 e0       	ldi	r31, 0x01	; 1
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <.do_copy_data_start>
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a0 36       	cpi	r26, 0x60	; 96
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <.do_copy_data_loop>
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a0 e6       	ldi	r26, 0x60	; 96
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a2 36       	cpi	r26, 0x62	; 98
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	6d d0       	rcall	.+218    	; 0x134 <main>
+  5a:	93 c0       	rjmp	.+294    	; 0x182 <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <__vector_1>:
+//
+int My_global;
+
+// Interrupt handler example for INT0
+//
+SIGNAL(SIG_INTERRUPT0) {
+  5e:	1f 92       	push	r1
+  60:	0f 92       	push	r0
+  62:	0f b6       	in	r0, 0x3f	; 63
+  64:	0f 92       	push	r0
+  66:	11 24       	eor	r1, r1
+  68:	df 93       	push	r29
+  6a:	cf 93       	push	r28
+  6c:	cd b7       	in	r28, 0x3d	; 61
+  6e:	de b7       	in	r29, 0x3e	; 62
+
+}
+  70:	cf 91       	pop	r28
+  72:	df 91       	pop	r29
+  74:	0f 90       	pop	r0
+  76:	0f be       	out	0x3f, r0	; 63
+  78:	0f 90       	pop	r0
+  7a:	1f 90       	pop	r1
+  7c:	18 95       	reti
+
+0000007e <eeprom_read>:
+// It is recommended to use this coding style to
+// follow better the mixed C-assembly code in the
+// Program Memory window
+//
+unsigned char eeprom_read(int address)
+{
+  7e:	df 93       	push	r29
+  80:	cf 93       	push	r28
+  82:	00 d0       	rcall	.+0      	; 0x84 <eeprom_read+0x6>
+  84:	cd b7       	in	r28, 0x3d	; 61
+  86:	de b7       	in	r29, 0x3e	; 62
+  88:	9a 83       	std	Y+2, r25	; 0x02
+  8a:	89 83       	std	Y+1, r24	; 0x01
+	while(EECR & (1<<EEWE));
+  8c:	ec e3       	ldi	r30, 0x3C	; 60
+  8e:	f0 e0       	ldi	r31, 0x00	; 0
+  90:	80 81       	ld	r24, Z
+  92:	88 2f       	mov	r24, r24
+  94:	90 e0       	ldi	r25, 0x00	; 0
+  96:	82 70       	andi	r24, 0x02	; 2
+  98:	90 70       	andi	r25, 0x00	; 0
+  9a:	00 97       	sbiw	r24, 0x00	; 0
+  9c:	b9 f7       	brne	.-18     	; 0x8c <eeprom_read+0xe>
+	EEAR = address;
+  9e:	ee e3       	ldi	r30, 0x3E	; 62
+  a0:	f0 e0       	ldi	r31, 0x00	; 0
+  a2:	89 81       	ldd	r24, Y+1	; 0x01
+  a4:	9a 81       	ldd	r25, Y+2	; 0x02
+  a6:	91 83       	std	Z+1, r25	; 0x01
+  a8:	80 83       	st	Z, r24
+	EECR |= (1<<EERE);
+  aa:	ac e3       	ldi	r26, 0x3C	; 60
+  ac:	b0 e0       	ldi	r27, 0x00	; 0
+  ae:	ec e3       	ldi	r30, 0x3C	; 60
+  b0:	f0 e0       	ldi	r31, 0x00	; 0
+  b2:	80 81       	ld	r24, Z
+  b4:	81 60       	ori	r24, 0x01	; 1
+  b6:	8c 93       	st	X, r24
+	return EEDR;
+  b8:	ed e3       	ldi	r30, 0x3D	; 61
+  ba:	f0 e0       	ldi	r31, 0x00	; 0
+  bc:	80 81       	ld	r24, Z
+}
+  be:	0f 90       	pop	r0
+  c0:	0f 90       	pop	r0
+  c2:	cf 91       	pop	r28
+  c4:	df 91       	pop	r29
+  c6:	08 95       	ret
+
+000000c8 <eeprom_write>:
+void eeprom_write(int address,char data)
+{
+  c8:	df 93       	push	r29
+  ca:	cf 93       	push	r28
+  cc:	00 d0       	rcall	.+0      	; 0xce <eeprom_write+0x6>
+  ce:	0f 92       	push	r0
+  d0:	cd b7       	in	r28, 0x3d	; 61
+  d2:	de b7       	in	r29, 0x3e	; 62
+  d4:	9a 83       	std	Y+2, r25	; 0x02
+  d6:	89 83       	std	Y+1, r24	; 0x01
+  d8:	6b 83       	std	Y+3, r22	; 0x03
+	while(EECR &(1<<EEWE));	//Wait until EEWE becomes zero.
+  da:	ec e3       	ldi	r30, 0x3C	; 60
+  dc:	f0 e0       	ldi	r31, 0x00	; 0
+  de:	80 81       	ld	r24, Z
+  e0:	88 2f       	mov	r24, r24
+  e2:	90 e0       	ldi	r25, 0x00	; 0
+  e4:	82 70       	andi	r24, 0x02	; 2
+  e6:	90 70       	andi	r25, 0x00	; 0
+  e8:	00 97       	sbiw	r24, 0x00	; 0
+  ea:	b9 f7       	brne	.-18     	; 0xda <eeprom_write+0x12>
+	while(SPMCR & (1<<SPMEN));		//Wait until SPMEN in SPMCR becomes zero.
+  ec:	e7 e5       	ldi	r30, 0x57	; 87
+  ee:	f0 e0       	ldi	r31, 0x00	; 0
+  f0:	80 81       	ld	r24, Z
+  f2:	88 2f       	mov	r24, r24
+  f4:	90 e0       	ldi	r25, 0x00	; 0
+  f6:	81 70       	andi	r24, 0x01	; 1
+  f8:	90 70       	andi	r25, 0x00	; 0
+  fa:	88 23       	and	r24, r24
+  fc:	b9 f7       	brne	.-18     	; 0xec <eeprom_write+0x24>
+	EEAR = address;									// Write new EEPROM address to EEAR (optional).
+  fe:	ee e3       	ldi	r30, 0x3E	; 62
+ 100:	f0 e0       	ldi	r31, 0x00	; 0
+ 102:	89 81       	ldd	r24, Y+1	; 0x01
+ 104:	9a 81       	ldd	r25, Y+2	; 0x02
+ 106:	91 83       	std	Z+1, r25	; 0x01
+ 108:	80 83       	st	Z, r24
+	EEDR = data;		//				 Write new EEPROM data to EEDR (optional).
+ 10a:	ed e3       	ldi	r30, 0x3D	; 61
+ 10c:	f0 e0       	ldi	r31, 0x00	; 0
+ 10e:	8b 81       	ldd	r24, Y+3	; 0x03
+ 110:	80 83       	st	Z, r24
+	EECR = 	0x04; 		// Write a logical one to the EEMWE bit while writing a zero to EEWE in EECR.
+ 112:	ec e3       	ldi	r30, 0x3C	; 60
+ 114:	f0 e0       	ldi	r31, 0x00	; 0
+ 116:	84 e0       	ldi	r24, 0x04	; 4
+ 118:	80 83       	st	Z, r24
+	EECR |= (1<<EEWE);// Within four clock cycles after setting EEMWE, write a logical one to EEWE.
+ 11a:	ac e3       	ldi	r26, 0x3C	; 60
+ 11c:	b0 e0       	ldi	r27, 0x00	; 0
+ 11e:	ec e3       	ldi	r30, 0x3C	; 60
+ 120:	f0 e0       	ldi	r31, 0x00	; 0
+ 122:	80 81       	ld	r24, Z
+ 124:	82 60       	ori	r24, 0x02	; 2
+ 126:	8c 93       	st	X, r24
+}
+ 128:	0f 90       	pop	r0
+ 12a:	0f 90       	pop	r0
+ 12c:	0f 90       	pop	r0
+ 12e:	cf 91       	pop	r28
+ 130:	df 91       	pop	r29
+ 132:	08 95       	ret
+
+00000134 <main>:
+// ***********************************************************
+// Main program
+//
+int main(void) {
+ 134:	df 93       	push	r29
+ 136:	cf 93       	push	r28
+ 138:	00 d0       	rcall	.+0      	; 0x13a <main+0x6>
+ 13a:	cd b7       	in	r28, 0x3d	; 61
+ 13c:	de b7       	in	r29, 0x3e	; 62
+
+  eeprom_write(0x01,2);
+ 13e:	62 e0       	ldi	r22, 0x02	; 2
+ 140:	81 e0       	ldi	r24, 0x01	; 1
+ 142:	90 e0       	ldi	r25, 0x00	; 0
+ 144:	c1 df       	rcall	.-126    	; 0xc8 <eeprom_write>
+  eeprom_write(0x02,4);
+ 146:	64 e0       	ldi	r22, 0x04	; 4
+ 148:	82 e0       	ldi	r24, 0x02	; 2
+ 14a:	90 e0       	ldi	r25, 0x00	; 0
+ 14c:	bd df       	rcall	.-134    	; 0xc8 <eeprom_write>
+  eeprom_write(0x03,6);
+ 14e:	66 e0       	ldi	r22, 0x06	; 6
+ 150:	83 e0       	ldi	r24, 0x03	; 3
+ 152:	90 e0       	ldi	r25, 0x00	; 0
+ 154:	b9 df       	rcall	.-142    	; 0xc8 <eeprom_write>
+	int x = eeprom_read(0x03);
+ 156:	83 e0       	ldi	r24, 0x03	; 3
+ 158:	90 e0       	ldi	r25, 0x00	; 0
+ 15a:	91 df       	rcall	.-222    	; 0x7e <eeprom_read>
+ 15c:	88 2f       	mov	r24, r24
+ 15e:	90 e0       	ldi	r25, 0x00	; 0
+ 160:	9a 83       	std	Y+2, r25	; 0x02
+ 162:	89 83       	std	Y+1, r24	; 0x01
+	DDRB = 0xFF;
+ 164:	e7 e3       	ldi	r30, 0x37	; 55
+ 166:	f0 e0       	ldi	r31, 0x00	; 0
+ 168:	8f ef       	ldi	r24, 0xFF	; 255
+ 16a:	80 83       	st	Z, r24
+	PORTB = x;
+ 16c:	e8 e3       	ldi	r30, 0x38	; 56
+ 16e:	f0 e0       	ldi	r31, 0x00	; 0
+ 170:	89 81       	ldd	r24, Y+1	; 0x01
+ 172:	80 83       	st	Z, r24
+ 174:	80 e0       	ldi	r24, 0x00	; 0
+ 176:	90 e0       	ldi	r25, 0x00	; 0
+}
+ 178:	0f 90       	pop	r0
+ 17a:	0f 90       	pop	r0
+ 17c:	cf 91       	pop	r28
+ 17e:	df 91       	pop	r29
+ 180:	08 95       	ret
+
+00000182 <_exit>:
+ 182:	f8 94       	cli
+
+00000184 <__stop_program>:
+ 184:	ff cf       	rjmp	.-2      	; 0x184 <__stop_program>

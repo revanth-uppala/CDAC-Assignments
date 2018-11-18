@@ -1,0 +1,17 @@
+Creating   'day2q3.eep'
+Creating   'day2q3.hex'
+Creating   'day2q3.obj'
+Creating   'day2q3.lis'
+Creating   'day2q3.map'
+
+Assembling 'day2q3.asm'
+Including  'C:\VMLAB\include\m8def.inc'
+
+Program memory usage:
+Code             :   31 words
+Constants (dw/db):    0 words
+Unused           :    0 words
+Total            :   31 words
+
+Assembly complete with no errors.
+Deleting   'day2q3.eep'

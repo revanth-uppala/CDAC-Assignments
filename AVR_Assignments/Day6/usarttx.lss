@@ -1,0 +1,263 @@
+
+usarttx.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000168  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000014  00800060  00000168  000001dc  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000002  00800074  0000017c  000001f0  2**0
+                  ALLOC
+  3 .stab         00000414  00000000  00000000  000001f0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      000006ac  00000000  00000000  00000604  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2c c0       	rjmp	.+88     	; 0x5c <__bad_interrupt>
+   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	e8 e6       	ldi	r30, 0x68	; 104
+  3a:	f1 e0       	ldi	r31, 0x01	; 1
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <.do_copy_data_start>
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a4 37       	cpi	r26, 0x74	; 116
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <.do_copy_data_loop>
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a4 e7       	ldi	r26, 0x74	; 116
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a6 37       	cpi	r26, 0x76	; 118
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	2f d0       	rcall	.+94     	; 0xb8 <main>
+  5a:	84 c0       	rjmp	.+264    	; 0x164 <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <init>:
+// It is recommended to use this coding style to
+// follow better the mixed C-assembly code in the
+// Program Memory window
+//
+void init(void)
+{
+  5e:	df 93       	push	r29
+  60:	cf 93       	push	r28
+  62:	cd b7       	in	r28, 0x3d	; 61
+  64:	de b7       	in	r29, 0x3e	; 62
+
+   UBRRH = UBRRH_VALUE;
+  66:	e0 e4       	ldi	r30, 0x40	; 64
+  68:	f0 e0       	ldi	r31, 0x00	; 0
+  6a:	10 82       	st	Z, r1
+   UBRRL = UBRRL_VALUE;
+  6c:	e9 e2       	ldi	r30, 0x29	; 41
+  6e:	f0 e0       	ldi	r31, 0x00	; 0
+  70:	8c e0       	ldi	r24, 0x0C	; 12
+  72:	80 83       	st	Z, r24
+	UCSRB = BV(TXEN) ;
+  74:	ea e2       	ldi	r30, 0x2A	; 42
+  76:	f0 e0       	ldi	r31, 0x00	; 0
+  78:	88 e0       	ldi	r24, 0x08	; 8
+  7a:	80 83       	st	Z, r24
+	UCSRC =  BV(URSEL) | BV(UCSZ0) | BV(UCSZ1);
+  7c:	e0 e4       	ldi	r30, 0x40	; 64
+  7e:	f0 e0       	ldi	r31, 0x00	; 0
+  80:	86 e8       	ldi	r24, 0x86	; 134
+  82:	80 83       	st	Z, r24
+		
+}
+  84:	cf 91       	pop	r28
+  86:	df 91       	pop	r29
+  88:	08 95       	ret
+
+0000008a <TX>:
+void TX(unsigned char x)
+{
+  8a:	df 93       	push	r29
+  8c:	cf 93       	push	r28
+  8e:	0f 92       	push	r0
+  90:	cd b7       	in	r28, 0x3d	; 61
+  92:	de b7       	in	r29, 0x3e	; 62
+  94:	89 83       	std	Y+1, r24	; 0x01
+   while ( !( UCSRA & (1<<UDRE)) );
+  96:	eb e2       	ldi	r30, 0x2B	; 43
+  98:	f0 e0       	ldi	r31, 0x00	; 0
+  9a:	80 81       	ld	r24, Z
+  9c:	88 2f       	mov	r24, r24
+  9e:	90 e0       	ldi	r25, 0x00	; 0
+  a0:	80 72       	andi	r24, 0x20	; 32
+  a2:	90 70       	andi	r25, 0x00	; 0
+  a4:	00 97       	sbiw	r24, 0x00	; 0
+  a6:	b9 f3       	breq	.-18     	; 0x96 <TX+0xc>
+	UDR = x;
+  a8:	ec e2       	ldi	r30, 0x2C	; 44
+  aa:	f0 e0       	ldi	r31, 0x00	; 0
+  ac:	89 81       	ldd	r24, Y+1	; 0x01
+  ae:	80 83       	st	Z, r24
+		
+}
+  b0:	0f 90       	pop	r0
+  b2:	cf 91       	pop	r28
+  b4:	df 91       	pop	r29
+  b6:	08 95       	ret
+
+000000b8 <main>:
+
+// ***********************************************************
+// Main program
+//
+int main(void) {
+  b8:	df 93       	push	r29
+  ba:	cf 93       	push	r28
+  bc:	cd b7       	in	r28, 0x3d	; 61
+  be:	de b7       	in	r29, 0x3e	; 62
+  c0:	6b 97       	sbiw	r28, 0x1b	; 27
+  c2:	0f b6       	in	r0, 0x3f	; 63
+  c4:	f8 94       	cli
+  c6:	de bf       	out	0x3e, r29	; 62
+  c8:	0f be       	out	0x3f, r0	; 63
+  ca:	cd bf       	out	0x3d, r28	; 61
+		 init();
+  cc:	c8 df       	rcall	.-112    	; 0x5e <init>
+	  unsigned  char str[20]  = "Hello CDAC!";
+  ce:	ce 01       	movw	r24, r28
+  d0:	03 96       	adiw	r24, 0x03	; 3
+  d2:	98 8f       	std	Y+24, r25	; 0x18
+  d4:	8f 8b       	std	Y+23, r24	; 0x17
+  d6:	a0 e6       	ldi	r26, 0x60	; 96
+  d8:	b0 e0       	ldi	r27, 0x00	; 0
+  da:	ba 8f       	std	Y+26, r27	; 0x1a
+  dc:	a9 8f       	std	Y+25, r26	; 0x19
+  de:	bc e0       	ldi	r27, 0x0C	; 12
+  e0:	bb 8f       	std	Y+27, r27	; 0x1b
+  e2:	e9 8d       	ldd	r30, Y+25	; 0x19
+  e4:	fa 8d       	ldd	r31, Y+26	; 0x1a
+  e6:	00 80       	ld	r0, Z
+  e8:	89 8d       	ldd	r24, Y+25	; 0x19
+  ea:	9a 8d       	ldd	r25, Y+26	; 0x1a
+  ec:	01 96       	adiw	r24, 0x01	; 1
+  ee:	9a 8f       	std	Y+26, r25	; 0x1a
+  f0:	89 8f       	std	Y+25, r24	; 0x19
+  f2:	af 89       	ldd	r26, Y+23	; 0x17
+  f4:	b8 8d       	ldd	r27, Y+24	; 0x18
+  f6:	0c 92       	st	X, r0
+  f8:	ef 89       	ldd	r30, Y+23	; 0x17
+  fa:	f8 8d       	ldd	r31, Y+24	; 0x18
+  fc:	31 96       	adiw	r30, 0x01	; 1
+  fe:	f8 8f       	std	Y+24, r31	; 0x18
+ 100:	ef 8b       	std	Y+23, r30	; 0x17
+ 102:	fb 8d       	ldd	r31, Y+27	; 0x1b
+ 104:	f1 50       	subi	r31, 0x01	; 1
+ 106:	fb 8f       	std	Y+27, r31	; 0x1b
+ 108:	8b 8d       	ldd	r24, Y+27	; 0x1b
+ 10a:	88 23       	and	r24, r24
+ 10c:	51 f7       	brne	.-44     	; 0xe2 <main+0x2a>
+ 10e:	88 e0       	ldi	r24, 0x08	; 8
+ 110:	fe 01       	movw	r30, r28
+ 112:	3f 96       	adiw	r30, 0x0f	; 15
+ 114:	df 01       	movw	r26, r30
+ 116:	98 2f       	mov	r25, r24
+ 118:	1d 92       	st	X+, r1
+ 11a:	9a 95       	dec	r25
+ 11c:	e9 f7       	brne	.-6      	; 0x118 <main+0x60>
+   	 int i= 0;
+ 11e:	1a 82       	std	Y+2, r1	; 0x02
+ 120:	19 82       	std	Y+1, r1	; 0x01
+    {
+   	
+//   	if(flag == 1)
+  // 	{
+   //		flag = 0;
+   		if(str[i] != '\0')
+ 122:	29 81       	ldd	r18, Y+1	; 0x01
+ 124:	3a 81       	ldd	r19, Y+2	; 0x02
+ 126:	ce 01       	movw	r24, r28
+ 128:	03 96       	adiw	r24, 0x03	; 3
+ 12a:	fc 01       	movw	r30, r24
+ 12c:	e2 0f       	add	r30, r18
+ 12e:	f3 1f       	adc	r31, r19
+ 130:	80 81       	ld	r24, Z
+ 132:	88 23       	and	r24, r24
+ 134:	79 f0       	breq	.+30     	; 0x154 <main+0x9c>
+   		{
+   			TX(str[i++]);
+ 136:	29 81       	ldd	r18, Y+1	; 0x01
+ 138:	3a 81       	ldd	r19, Y+2	; 0x02
+ 13a:	ce 01       	movw	r24, r28
+ 13c:	03 96       	adiw	r24, 0x03	; 3
+ 13e:	fc 01       	movw	r30, r24
+ 140:	e2 0f       	add	r30, r18
+ 142:	f3 1f       	adc	r31, r19
+ 144:	20 81       	ld	r18, Z
+ 146:	89 81       	ldd	r24, Y+1	; 0x01
+ 148:	9a 81       	ldd	r25, Y+2	; 0x02
+ 14a:	01 96       	adiw	r24, 0x01	; 1
+ 14c:	9a 83       	std	Y+2, r25	; 0x02
+ 14e:	89 83       	std	Y+1, r24	; 0x01
+ 150:	82 2f       	mov	r24, r18
+ 152:	9b df       	rcall	.-202    	; 0x8a <TX>
+   		}
+   		if(i >10)
+ 154:	89 81       	ldd	r24, Y+1	; 0x01
+ 156:	9a 81       	ldd	r25, Y+2	; 0x02
+ 158:	8b 30       	cpi	r24, 0x0B	; 11
+ 15a:	91 05       	cpc	r25, r1
+ 15c:	14 f3       	brlt	.-60     	; 0x122 <main+0x6a>
+   		{
+   			i = 0;
+ 15e:	1a 82       	std	Y+2, r1	; 0x02
+ 160:	19 82       	std	Y+1, r1	; 0x01
+ 162:	df cf       	rjmp	.-66     	; 0x122 <main+0x6a>
+
+00000164 <_exit>:
+ 164:	f8 94       	cli
+
+00000166 <__stop_program>:
+ 166:	ff cf       	rjmp	.-2      	; 0x166 <__stop_program>

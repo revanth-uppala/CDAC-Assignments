@@ -1,0 +1,301 @@
+   1               		.file	"eeprom.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	__vector_1
+  73               	__vector_1:
+   1:eeprom.c      **** // ***********************************************************
+   2:eeprom.c      **** // Project:
+   3:eeprom.c      **** // Author:
+   4:eeprom.c      **** // Module description:
+   5:eeprom.c      **** // ***********************************************************
+   6:eeprom.c      **** 
+   7:eeprom.c      **** #include <avr\io.h>              // Most basic include files
+   8:eeprom.c      **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:eeprom.c      **** #include <avr\signal.h>          // here
+  10:eeprom.c      **** 
+  11:eeprom.c      **** // Define here the global static variables
+  12:eeprom.c      **** //
+  13:eeprom.c      **** int My_global;
+  14:eeprom.c      **** 
+  15:eeprom.c      **** // Interrupt handler example for INT0
+  16:eeprom.c      **** //
+  17:eeprom.c      **** SIGNAL(SIG_INTERRUPT0) {
+  74               	 r0,__SREG__
+  75               		push r0
+  76               		clr __zero_reg__
+  77 0000 1F92      		push r29
+  78 0002 0F92      		push r28
+  79 0004 0FB6      		in r28,__SP_L__
+  80 0006 0F92      		in r29,__SP_H__
+  81 0008 1124      	/* prologue: Signal */
+  82 000a DF93      	/* frame size = 0 */
+  83 000c CF93      	/* epilogue start */
+  85 0010 DEB7      	.LM1:
+  86               		pop r28
+  87               		pop r29
+  88               		pop r0
+  18:eeprom.c      **** 
+  19:eeprom.c      **** }
+  89               	ush r0
+  90               		in r0,__SREG__
+  91 0012 CF91      		push r0
+  92 0014 DF91      		clr __zero_reg__
+  93 0016 0F90      		push r29
+  94 0018 0FBE      		push r28
+  95 001a 0F90      		in r28,__SP_L__
+  96 001c 1F90      		in r29,__SP_H__
+  97 001e 1895      	/* prologue: Signal */
+  98               	/* frame size = 0 */
+  99               	/* epilogue start */
+ 101               	.LM1:
+ 102               		pop r28
+ 103               		pop r29
+ 104               		pop r0
+  20:eeprom.c      **** 
+  21:eeprom.c      **** // It is recommended to use this coding style to
+  22:eeprom.c      **** // follow better the mixed C-assembly code in the
+  23:eeprom.c      **** // Program Memory window
+  24:eeprom.c      **** //
+  25:eeprom.c      **** unsigned char eeprom_read(int address)
+  26:eeprom.c      **** {
+ 105               	ush r0
+ 106               		in r0,__SREG__
+ 107               		push r0
+ 108 0020 DF93      		clr __zero_reg__
+ 109 0022 CF93      		push r29
+ 110 0024 00D0      		push r28
+ 111 0026 CDB7      		in r28,__SP_L__
+ 112 0028 DEB7      		in r29,__SP_H__
+ 113               	/* prologue: Signal */
+ 114               	/* frame size = 0 */
+ 115 002a 9A83      	/* epilogue start */
+ 117               	.LM1:
+  27:eeprom.c      **** 	while(EECR & (1<<EEWE));
+ 118               	.LFBB1:
+ 119               		push __zero_reg__
+ 120 002e ECE3      		push r0
+ 121 0030 F0E0      		in r0,__SREG__
+ 122 0032 8081      		push r0
+ 123 0034 882F      		clr __zero_reg__
+ 124 0036 90E0      		push r29
+ 125 0038 8270      		push r28
+ 126 003a 9070      		in r28,__SP_L__
+ 127 003c 0097      		in r29,__SP_H__
+ 128 003e 01F4      	/* prologue: Signal */
+  28:eeprom.c      **** 	EEAR = address;
+ 129               	or_1
+ 131 0040 EEE3      	__vector_1:
+ 133 0044 8981      	.LM0:
+ 134 0046 9A81      	.LFBB1:
+ 135 0048 9183      		push __zero_reg__
+ 136 004a 8083      		push r0
+  29:eeprom.c      **** 	EECR |= (1<<EERE);
+ 137               	_SREG__
+ 138               		push r0
+ 139 004c ACE3      		clr __zero_reg__
+ 140 004e B0E0      		push r29
+ 141 0050 ECE3      		push r28
+ 142 0052 F0E0      		in r28,__SP_L__
+ 143 0054 8081      		in r29,__SP_H__
+ 144 0056 8160      	/* prologue: Signal */
+ 145 0058 8C93      	/* frame size = 0 */
+  30:eeprom.c      **** 	return EEDR;
+ 146               	, @function
+ 147               	__vector_1:
+ 149 005c F0E0      	.LM0:
+ 150 005e 8081      	.LFBB1:
+ 151               		push __zero_reg__
+  31:eeprom.c      **** }
+ 152               	r0
+ 153               		in r0,__SREG__
+ 154 0060 0F90      		push r0
+ 155 0062 0F90      		clr __zero_reg__
+ 156 0064 CF91      		push r29
+ 157 0066 DF91      		push r28
+ 158 0068 0895      		in r28,__SP_L__
+ 159               		in r29,__SP_H__
+ 160               	/* prologue: Signal */
+ 161               	/* frame size = 0 */
+ 162               	/* epilogue start */
+ 164               	.LM1:
+ 165               		pop r28
+ 166               		pop r29
+  32:eeprom.c      **** void eeprom_write(int address,char data)
+  33:eeprom.c      **** {
+ 167               	_reg__
+ 168               		push r0
+ 169               		in r0,__SREG__
+ 170 006a DF93      		push r0
+ 171 006c CF93      		clr __zero_reg__
+ 172 006e 00D0      		push r29
+ 173 0070 0F92      		push r28
+ 174 0072 CDB7      		in r28,__SP_L__
+ 175 0074 DEB7      		in r29,__SP_H__
+ 176               	/* prologue: Signal */
+ 177               	/* frame size = 0 */
+ 178 0076 9A83      	/* epilogue start */
+ 180 007a 6B83      	.LM1:
+ 181               		pop r28
+  34:eeprom.c      **** 	while(EECR &(1<<EEWE));	//Wait until EEWE becomes zero.
+ 182               	ush __zero_reg__
+ 183               		push r0
+ 184 007c ECE3      		in r0,__SREG__
+ 185 007e F0E0      		push r0
+ 186 0080 8081      		clr __zero_reg__
+ 187 0082 882F      		push r29
+ 188 0084 90E0      		push r28
+ 189 0086 8270      		in r28,__SP_L__
+ 190 0088 9070      		in r29,__SP_H__
+ 191 008a 0097      	/* prologue: Signal */
+ 192 008c 01F4      	/* frame size = 0 */
+ 193               	/* epilogue start */
+  35:eeprom.c      **** 	while(SPMCR & (1<<SPMEN));		//Wait until SPMEN in SPMCR becomes zero.
+ 194               	:
+ 196 008e E7E5      	.LM0:
+ 197 0090 F0E0      	.LFBB1:
+ 198 0092 8081      		push __zero_reg__
+ 199 0094 882F      		push r0
+ 200 0096 90E0      		in r0,__SREG__
+ 201 0098 8170      		push r0
+ 202 009a 9070      		clr __zero_reg__
+ 203 009c 8823      		push r29
+ 204 009e 01F4      		push r28
+  36:eeprom.c      **** 	EEAR = address;									// Write new EEPROM address to EEAR (optional).
+ 206               	.global	__vector_1
+ 208 00a2 F0E0      	__vector_1:
+ 210 00a6 9A81      	.LM0:
+ 211 00a8 9183      	.LFBB1:
+ 212 00aa 8083      		push __zero_reg__
+  37:eeprom.c      **** 	EEDR = data;		//				 Write new EEPROM data to EEDR (optional).
+ 213               	
+ 214               		in r0,__SREG__
+ 215 00ac EDE3      		push r0
+ 216 00ae F0E0      		clr __zero_reg__
+ 217 00b0 8B81      		push r29
+ 218 00b2 8083      		push r28
+  38:eeprom.c      **** 	EECR = 	0x04; 		// Write a logical one to the EEMWE bit while writing a zero to EEWE in EECR.
+ 220               	.global	__vector_1
+ 222 00b6 F0E0      	__vector_1:
+ 224 00ba 8083      	.LM0:
+  39:eeprom.c      **** 	EECR |= (1<<EEWE);// Within four clock cycles after setting EEMWE, write a logical one to EEWE.
+ 225               	:
+ 226               		push __zero_reg__
+ 227 00bc ACE3      		push r0
+ 228 00be B0E0      		in r0,__SREG__
+ 229 00c0 ECE3      		push r0
+ 230 00c2 F0E0      		clr __zero_reg__
+ 231 00c4 8081      		push r29
+ 232 00c6 8260      		push r28
+ 233 00c8 8C93      		in r28,__SP_L__
+ 234               		in r29,__SP_H__
+  40:eeprom.c      **** }
+ 235               	_vector_1
+ 236               	.global	__vector_1
+ 238 00cc 0F90      	__vector_1:
+ 240 00d0 CF91      	.LM0:
+ 241 00d2 DF91      	.LFBB1:
+ 242 00d4 0895      		push __zero_reg__
+ 243               		push r0
+ 244               		in r0,__SREG__
+ 245               		push r0
+ 246               		clr __zero_reg__
+ 247               		push r29
+ 248               		push r28
+  41:eeprom.c      **** // ***********************************************************
+  42:eeprom.c      **** // Main program
+  43:eeprom.c      **** //
+  44:eeprom.c      **** int main(void) {
+ 249               	__
+ 250               		in r29,__SP_H__
+ 251               	/* prologue: Signal */
+ 252 00d6 DF93      	/* frame size = 0 */
+ 253 00d8 CF93      	/* epilogue start */
+ 255 00dc CDB7      	.LM1:
+ 256 00de DEB7      		pop r28
+ 257               		pop r29
+ 258               		pop r0
+  45:eeprom.c      **** 
+  46:eeprom.c      ****   eeprom_write(0x01,2);
+ 259               	ush r0
+ 260               		in r0,__SREG__
+ 261 00e0 62E0      		push r0
+ 262 00e2 81E0      		clr __zero_reg__
+ 263 00e4 90E0      		push r29
+ 264 00e6 00D0      		push r28
+  47:eeprom.c      ****   eeprom_write(0x02,4);
+ 266               	.global	__vector_1
+ 268 00ea 82E0      	__vector_1:
+ 270 00ee 00D0      	.LM0:
+  48:eeprom.c      ****   eeprom_write(0x03,6);
+ 271               	:
+ 272               		push __zero_reg__
+ 273 00f0 66E0      		push r0
+ 274 00f2 83E0      		in r0,__SREG__
+ 275 00f4 90E0      		push r0
+ 276 00f6 00D0      		clr __zero_reg__
+  49:eeprom.c      **** 	int x = eeprom_read(0x03);
+ 277               	,0
+ 280 00fa 90E0      	.global	__vector_1
+ 282 00fe 882F      	__vector_1:
+ 284 0102 9A83      	.LM0:
+ 285 0104 8983      	.LFBB1:
+  50:eeprom.c      **** 	DDRB = 0xFF;
+ 286               	ero_reg__
+ 287               		push r0
+ 288 0106 E7E3      		in r0,__SREG__
+ 289 0108 F0E0      		push r0
+ 290 010a 8FEF      		clr __zero_reg__
+ 291 010c 8083      		push r29
+  51:eeprom.c      **** 	PORTB = x;
+ 292               	162,0,0,0
+ 294 010e E8E3      	.global	__vector_1
+ 296 0112 8981      	__vector_1:
+ 298               	.LM0:
+ 299               	.LFBB1:
+ 300               		push __zero_reg__
+ 301               		push r0
+ 302 0116 80E0      		in r0,__SREG__
+ 303 0118 90E0      		push r0
+ 304               		clr __zero_reg__
+ 305               		push r29
+ 306               		push r28
+  52:eeprom.c      **** }
+ 307               	_
+ 308               		in r29,__SP_H__
+ 309 011a 0F90      	/* prologue: Signal */
+ 310 011c 0F90      	/* frame size = 0 */
+ 311 011e CF91      	/* epilogue start */
+ 313 0122 0895      	.LM1:
+ 314               		pop r28
+ 315               		pop r29
+ 316               		pop r0
+ 317               		out __SREG__,r0
+ 318               		pop r0
+ 319               		pop __zero_reg__
+ 320               		reti
+ 322               	.Lscope1:
+DEFINED SYMBOLS
+                            *ABS*:00000000 eeprom.c
+C:\users\batch2\Temp/ccA1tgz0.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccA1tgz0.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccA1tgz0.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccA1tgz0.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccA1tgz0.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccA1tgz0.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccA1tgz0.s:73     .text:00000000 __vector_1
+C:\users\batch2\Temp/ccA1tgz0.s:104    .text:00000020 eeprom_read
+C:\users\batch2\Temp/ccA1tgz0.s:166    .text:0000006a eeprom_write
+C:\users\batch2\Temp/ccA1tgz0.s:248    .text:000000d6 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

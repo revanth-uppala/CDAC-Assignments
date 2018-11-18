@@ -1,0 +1,166 @@
+
+day4_q4.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000d0  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000002  00800060  000000d0  00000144  2**0
+                  ALLOC
+  2 .stab         00000378  00000000  00000000  00000144  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      0000066d  00000000  00000000  000004bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2c c0       	rjmp	.+88     	; 0x5c <__bad_interrupt>
+   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	e0 ed       	ldi	r30, 0xD0	; 208
+  3a:	f0 e0       	ldi	r31, 0x00	; 0
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <.do_copy_data_start>
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a0 36       	cpi	r26, 0x60	; 96
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <.do_copy_data_loop>
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a0 e6       	ldi	r26, 0x60	; 96
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a2 36       	cpi	r26, 0x62	; 98
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	0a d0       	rcall	.+20     	; 0x6e <main>
+  5a:	38 c0       	rjmp	.+112    	; 0xcc <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <my_function>:
+
+// It is recommended to use this coding style to
+// follow better the mixed C-assembly code in the
+// Program Memory window
+//
+void my_function(void) {  // Put the open brace '{' here
+  5e:	df 93       	push	r29
+  60:	cf 93       	push	r28
+  62:	cd b7       	in	r28, 0x3d	; 61
+  64:	de b7       	in	r29, 0x3e	; 62
+
+   asm("nop");          // Inline assembly example
+  66:	00 00       	nop
+}
+  68:	cf 91       	pop	r28
+  6a:	df 91       	pop	r29
+  6c:	08 95       	ret
+
+0000006e <main>:
+
+// ***********************************************************
+// Main program
+//
+int main(void) {
+  6e:	df 93       	push	r29
+  70:	cf 93       	push	r28
+  72:	cd b7       	in	r28, 0x3d	; 61
+  74:	de b7       	in	r29, 0x3e	; 62
+
+	PIN_SET(DDRB,PB3); //OC2 as output
+  76:	a7 e3       	ldi	r26, 0x37	; 55
+  78:	b0 e0       	ldi	r27, 0x00	; 0
+  7a:	e7 e3       	ldi	r30, 0x37	; 55
+  7c:	f0 e0       	ldi	r31, 0x00	; 0
+  7e:	80 81       	ld	r24, Z
+  80:	88 60       	ori	r24, 0x08	; 8
+  82:	8c 93       	st	X, r24
+	PIN_SET(TCCR2,WGM20);             //phase correct PWM
+  84:	a5 e4       	ldi	r26, 0x45	; 69
+  86:	b0 e0       	ldi	r27, 0x00	; 0
+  88:	e5 e4       	ldi	r30, 0x45	; 69
+  8a:	f0 e0       	ldi	r31, 0x00	; 0
+  8c:	80 81       	ld	r24, Z
+  8e:	80 64       	ori	r24, 0x40	; 64
+  90:	8c 93       	st	X, r24
+	PIN_SET(TCCR2,COM20);
+  92:	a5 e4       	ldi	r26, 0x45	; 69
+  94:	b0 e0       	ldi	r27, 0x00	; 0
+  96:	e5 e4       	ldi	r30, 0x45	; 69
+  98:	f0 e0       	ldi	r31, 0x00	; 0
+  9a:	80 81       	ld	r24, Z
+  9c:	80 61       	ori	r24, 0x10	; 16
+  9e:	8c 93       	st	X, r24
+	PIN_SET(TCCR2,COM21);
+  a0:	a5 e4       	ldi	r26, 0x45	; 69
+  a2:	b0 e0       	ldi	r27, 0x00	; 0
+  a4:	e5 e4       	ldi	r30, 0x45	; 69
+  a6:	f0 e0       	ldi	r31, 0x00	; 0
+  a8:	80 81       	ld	r24, Z
+  aa:	80 62       	ori	r24, 0x20	; 32
+  ac:	8c 93       	st	X, r24
+	TCNT2 = 0;
+  ae:	e4 e4       	ldi	r30, 0x44	; 68
+  b0:	f0 e0       	ldi	r31, 0x00	; 0
+  b2:	10 82       	st	Z, r1
+	OCR2 = 200;
+  b4:	e3 e4       	ldi	r30, 0x43	; 67
+  b6:	f0 e0       	ldi	r31, 0x00	; 0
+  b8:	88 ec       	ldi	r24, 0xC8	; 200
+  ba:	80 83       	st	Z, r24
+	PIN_SET(TCCR2,CS20);
+  bc:	a5 e4       	ldi	r26, 0x45	; 69
+  be:	b0 e0       	ldi	r27, 0x00	; 0
+  c0:	e5 e4       	ldi	r30, 0x45	; 69
+  c2:	f0 e0       	ldi	r31, 0x00	; 0
+  c4:	80 81       	ld	r24, Z
+  c6:	81 60       	ori	r24, 0x01	; 1
+  c8:	8c 93       	st	X, r24
+  ca:	ff cf       	rjmp	.-2      	; 0xca <main+0x5c>
+
+000000cc <_exit>:
+  cc:	f8 94       	cli
+
+000000ce <__stop_program>:
+  ce:	ff cf       	rjmp	.-2      	; 0xce <__stop_program>

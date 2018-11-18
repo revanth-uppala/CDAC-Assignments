@@ -1,0 +1,100 @@
+ARM GAS  boot.s 			page 1
+
+
+   1              	
+   2              	;/* file  @ boot.s  */
+   3              	
+   4              	
+   5              	.code 32
+   6              	.text
+   7              	
+   8              	.global _start
+   9              	.global __start
+  10              	
+  11              	.extern initilize_stack
+  12              	
+  13              	;/* Entry Point of the programe  */
+  14              	_start:
+  15              	__start:
+  16              	
+  17              	
+  18              	;/* Start of the vector table */
+  19              	
+  20 ???? 060000EA 	b       RESET_HANDLER
+  21 ???? 070000EA 	b       UNDEF_HANDLER
+  22 ???? 080000EA 	b       SWI_HANDLER
+  23 ???? 1D0000EA 	b       PREFETCH_ABORT_HANDLER
+  24 ???? 1E0000EA 	b       DATA_ABORT_HANDLER
+  25 ???? 1F0000EA 	b       RESERVED_HANDLER
+  26 ???? 1F0000EA 	b       IRQ_HANDLER
+  27 ???? 04F05EE2 	        FIQ_HANDLER:subs pc,r14,#4
+  28              	
+  29              	
+  30              	;/* Exceptions handlers */
+  31              	
+  32 ???? FEFFFFEA 	RESET_HANDLER           :       b initilize_stack  
+  33              	
+  34 ???? 0EF0B0E1 	UNDEF_HANDLER           :       movs pc,r14
+  35              	
+  36 ???? FF5F2DE9 	SWI_HANDLER             :	stmfd sp!,{r0-r12,lr}
+  37 ???? 04201EE5 					ldr r2,[lr,#-4]
+  38 ???? FF24C2E3 					bic r2,r2,#0xff000000 ;r2 = swi number
+  39 ???? 4C309FE5 					ldr r3,= 0x123 ;0x123 for addition
+  40 ???? 4C409FE5 					ldr r4,= 0x456 ;0x456 for subtraction
+  41              					
+  42 ???? 030052E1 					cmp r2,r3
+  43 ???? 1300000A 					beq add
+  44 ???? 040052E1 					cmp r2,r4
+  45 ???? 1900000A 					beq sub				
+  46              					
+  47 ???? FF9FBDE8 					ldmfd sp!,{r0-r12,pc}
+  48 ???? 0EF0B0E1 					movs pc,r14 
+  49              	add : 
+  50 ???? 012090E0 		adds r2,r0,r1
+  51 ???? 08001FE5 		ldr r0,r2
+  52 ???? 000000EF 		swi 0	
+  53 ???? 560400EF 		swi 0x456
+  54 ???? FF9FBDE8 		ldmfd sp!,{r0-r12,pc}	
+  55 ???? 0EF0B0E1 		movs pc,r14
+  56              	sub : 
+  57 ???? 012050E0 		subs r2,r0,r1
+ARM GAS  boot.s 			page 2
+
+
+  58 ???? 08001FE5 		ldr r0,r2
+  59 ???? 000000EF 		swi 0
+  60 ???? FF9FBDE8 		ldmfd sp!,{r0-r12,pc}
+  61              				
+  62              	
+  63              	
+  64 ???? 04F05EE2 	PREFETCH_ABORT_HANDLER  :       subs pc,r14,#4
+  65              	
+  66 ???? 08F05EE2 	DATA_ABORT_HANDLER      :       subs pc,r14,#8
+  67              	
+  68              	RESERVED_HANDLER        :
+  69              	
+  70 ???? 04F05EE2 	IRQ_HANDLER             :       subs pc,r14,#4
+  71              	
+  72 ???? 23010000 	.end 
+****  Error:internal_relocation (type: OFFSET_IMM) not fixed up
+  72      56040000 
+ARM GAS  boot.s 			page 3
+
+
+DEFINED SYMBOLS
+              boot.s:14     .text:00000000 _start
+              boot.s:15     .text:00000000 __start
+              boot.s:32     .text:00000020 RESET_HANDLER
+              boot.s:34     .text:00000024 UNDEF_HANDLER
+              boot.s:36     .text:00000028 SWI_HANDLER
+              boot.s:64     .text:0000007c PREFETCH_ABORT_HANDLER
+              boot.s:66     .text:00000080 DATA_ABORT_HANDLER
+              boot.s:68     .text:00000084 RESERVED_HANDLER
+              boot.s:70     .text:00000084 IRQ_HANDLER
+              boot.s:27     .text:0000001c FIQ_HANDLER
+              boot.s:49     .text:00000054 add
+              boot.s:56     .text:0000006c sub
+
+UNDEFINED SYMBOLS
+initilize_stack
+r2

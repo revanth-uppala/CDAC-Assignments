@@ -1,0 +1,7 @@
+ARM GAS  boot.s 			page 1
+
+
+DEFINED SYMBOLS
+              boot.s:0      .text:00000000 L0F0
+
+NO UNDEFINED SYMBOLS

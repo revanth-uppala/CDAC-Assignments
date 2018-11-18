@@ -1,0 +1,153 @@
+   1               		.file	"day4_q4.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	my_function
+  73               	my_function:
+   1:day4_q4.c     **** // ***********************************************************
+   2:day4_q4.c     **** // Project:
+   3:day4_q4.c     **** // Author:
+   4:day4_q4.c     **** // Module description:
+   5:day4_q4.c     **** // ***********************************************************
+   6:day4_q4.c     **** 
+   7:day4_q4.c     **** #include <avr\io.h>              // Most basic include files
+   8:day4_q4.c     **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:day4_q4.c     **** #include <avr\signal.h>          // here
+  10:day4_q4.c     **** #define PIN_SET(PORT,PIN) PORT |= (1<<PIN)
+  11:day4_q4.c     **** #define PIN_CLEAR(PORT,PIN) PORT &= ~(1<<PIN)
+  12:day4_q4.c     **** 
+  13:day4_q4.c     **** // Define here the global static variables
+  14:day4_q4.c     **** //
+  15:day4_q4.c     **** int My_global;
+  16:day4_q4.c     **** 
+  17:day4_q4.c     **** // Interrupt handler example for INT0
+  18:day4_q4.c     **** //
+  19:day4_q4.c     **** 
+  20:day4_q4.c     **** 
+  21:day4_q4.c     **** // It is recommended to use this coding style to
+  22:day4_q4.c     **** // follow better the mixed C-assembly code in the
+  23:day4_q4.c     **** // Program Memory window
+  24:day4_q4.c     **** //
+  25:day4_q4.c     **** void my_function(void) {  // Put the open brace '{' here
+  74               	P_L__
+  75               		in r29,__SP_H__
+  76               	/* prologue: function */
+  77 0000 DF93      	/* frame size = 0 */
+  79 0004 CDB7      	.LM1:
+  80 0006 DEB7      	/* #APP */
+  81               	 ;  27 "day4_q4.c" 1
+  82               		nop
+  26:day4_q4.c     **** 
+  27:day4_q4.c     ****    asm("nop");          // Inline assembly example
+  83               	ame size = 0 */
+  85               	.LM1:
+  86               	/* #APP */
+  87 0008 0000      	 ;  27 "day4_q4.c" 1
+  88               		nop
+  89               	 ;  0 "" 2
+  28:day4_q4.c     **** }
+  90               	 */
+  92               	.LM1:
+  93 000a CF91      	/* #APP */
+  94 000c DF91      	 ;  27 "day4_q4.c" 1
+  95 000e 0895      		nop
+  96               	 ;  0 "" 2
+  97               	/* epilogue start */
+  99               	.LM2:
+ 100               	/* #NOAPP */
+ 101               		pop r28
+  29:day4_q4.c     **** 
+  30:day4_q4.c     **** // ***********************************************************
+  31:day4_q4.c     **** // Main program
+  32:day4_q4.c     **** //
+  33:day4_q4.c     **** int main(void) {
+ 102               	" 2
+ 103               	/* epilogue start */
+ 105 0010 DF93      	.LM2:
+ 106 0012 CF93      	/* #NOAPP */
+ 107 0014 CDB7      		pop r28
+ 108 0016 DEB7      		pop r29
+ 109               		ret
+  34:day4_q4.c     **** 
+  35:day4_q4.c     **** 	PIN_SET(DDRB,PB3); //OC2 as output
+ 111               	1
+ 112               	.LM2:
+ 113 0018 A7E3      	/* #NOAPP */
+ 114 001a B0E0      		pop r28
+ 115 001c E7E3      		pop r29
+ 116 001e F0E0      		ret
+ 118 0022 8860      	.Lscope1:
+  36:day4_q4.c     **** 	PIN_SET(TCCR2,WGM20);             //phase correct PWM
+ 120               	size	my_function, .-my_function
+ 121               	.Lscope1:
+ 123 0028 B0E0      	.global	main
+ 125 002c F0E0      	main:
+ 127 0030 8064      	.LM3:
+ 128 0032 8C93      	.LFBB2:
+  37:day4_q4.c     **** 	PIN_SET(TCCR2,COM20);
+ 130               	main:
+ 132 0036 B0E0      	.LM3:
+ 133 0038 E5E4      	.LFBB2:
+ 134 003a F0E0      		push r29
+ 135 003c 8081      		push r28
+ 136 003e 8061      		in r28,__SP_L__
+ 137 0040 8C93      		in r29,__SP_H__
+  38:day4_q4.c     **** 	PIN_SET(TCCR2,COM21);
+ 138               	M3:
+ 139               	.LFBB2:
+ 140 0042 A5E4      		push r29
+ 141 0044 B0E0      		push r28
+ 142 0046 E5E4      		in r28,__SP_L__
+ 143 0048 F0E0      		in r29,__SP_H__
+ 144 004a 8081      	/* prologue: function */
+ 145 004c 8062      	/* frame size = 0 */
+  39:day4_q4.c     **** 	TCNT2 = 0;
+ 147               	: function */
+ 148               	/* frame size = 0 */
+ 150 0052 F0E0      	.LM4:
+ 151 0054 1082      		ldi r26,lo8(55)
+  40:day4_q4.c     **** 	OCR2 = 200;
+ 152               	ze = 0 */
+ 154 0056 E3E4      	.LM4:
+ 155 0058 F0E0      		ldi r26,lo8(55)
+ 156 005a 88EC      		ldi r27,hi8(55)
+ 157 005c 8083      		ldi r30,lo8(55)
+  41:day4_q4.c     **** 	PIN_SET(TCCR2,CS20);
+ 158               	2
+ 159               	.LM4:
+ 160 005e A5E4      		ldi r26,lo8(55)
+ 161 0060 B0E0      		ldi r27,hi8(55)
+ 162 0062 E5E4      		ldi r30,lo8(55)
+ 163 0064 F0E0      		ldi r31,hi8(55)
+ 164 0066 8081      		ld r24,Z
+ 165 0068 8160      		ori r24,lo8(8)
+ 166 006a 8C93      		st X,r24
+ 168 006c 00C0      	.LM5:
+ 169               		ldi r26,lo8(69)
+ 170               		ldi r27,hi8(69)
+ 171               		ldi r30,lo8(69)
+ 172               		ldi r31,hi8(69)
+ 173               		ld r24,Z
+ 174               		ori r24,lo8(64)
+DEFINED SYMBOLS
+                            *ABS*:00000000 day4_q4.c
+C:\users\batch2\Temp/cck7Jm79.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/cck7Jm79.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/cck7Jm79.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/cck7Jm79.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/cck7Jm79.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/cck7Jm79.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/cck7Jm79.s:73     .text:00000000 my_function
+C:\users\batch2\Temp/cck7Jm79.s:101    .text:00000010 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

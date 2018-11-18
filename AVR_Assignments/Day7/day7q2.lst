@@ -1,0 +1,171 @@
+   1               		.file	"day7q2.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	__vector_15
+  73               	__vector_15:
+   1:day7q2.c      **** // ***********************************************************
+   2:day7q2.c      **** // Project:
+   3:day7q2.c      **** // Author:
+   4:day7q2.c      **** // Module description:
+   5:day7q2.c      **** // ***********************************************************
+   6:day7q2.c      **** 
+   7:day7q2.c      **** #include <avr\io.h>              // Most basic include files
+   8:day7q2.c      **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:day7q2.c      **** #include <avr\signal.h>          // here
+  10:day7q2.c      **** 
+  11:day7q2.c      **** // Define here the global static variables
+  12:day7q2.c      **** //
+  13:day7q2.c      **** int My_global;
+  14:day7q2.c      **** 
+  15:day7q2.c      **** // Interrupt handler example for INT0
+  16:day7q2.c      **** //
+  17:day7q2.c      **** 
+  18:day7q2.c      **** 
+  19:day7q2.c      **** // It is recommended to use this coding style to
+  20:day7q2.c      **** // follow better the mixed C-assembly code in the
+  21:day7q2.c      **** // Program Memory window
+  22:day7q2.c      **** //
+  23:day7q2.c      **** ISR(EE_RDY_vect)
+  24:day7q2.c      **** {
+  74               	 r0,__SREG__
+  75               		push r0
+  76               		clr __zero_reg__
+  77 0000 1F92      		push r24
+  78 0002 0F92      		push r25
+  79 0004 0FB6      		push r26
+  80 0006 0F92      		push r27
+  81 0008 1124      		push r30
+  82 000a 8F93      		push r31
+  83 000c 9F93      		push r29
+  84 000e AF93      		push r28
+  85 0010 BF93      		in r28,__SP_L__
+  86 0012 EF93      		in r29,__SP_H__
+  87 0014 FF93      	/* prologue: Signal */
+  88 0016 DF93      	/* frame size = 0 */
+  90 001a CDB7      	.LM1:
+  91 001c DEB7      		ldi r30,lo8(62)
+  92               		ldi r31,hi8(62)
+  93               		ldi r24,lo8(1)
+  25:day7q2.c      **** 	EEAR = 0X001;
+  94               	bn	68,0,25,.LM1-.LFBB1
+  95               	.LM1:
+  96 001e EEE3      		ldi r30,lo8(62)
+  97 0020 F0E0      		ldi r31,hi8(62)
+  98 0022 81E0      		ldi r24,lo8(1)
+  99 0024 90E0      		ldi r25,hi8(1)
+ 100 0026 9183      		std Z+1,r25
+ 101 0028 8083      		st Z,r24
+  26:day7q2.c      **** 	EEDR = 0x01;
+ 102               	62)
+ 103               		ldi r31,hi8(62)
+ 104 002a EDE3      		ldi r24,lo8(1)
+ 105 002c F0E0      		ldi r25,hi8(1)
+ 106 002e 81E0      		std Z+1,r25
+ 107 0030 8083      		st Z,r24
+  27:day7q2.c      **** 	EECR |= (1<<EEMWE) ;
+ 108               	62)
+ 109               		ldi r31,hi8(62)
+ 110 0032 ACE3      		ldi r24,lo8(1)
+ 111 0034 B0E0      		ldi r25,hi8(1)
+ 112 0036 ECE3      		std Z+1,r25
+ 113 0038 F0E0      		st Z,r24
+ 115 003c 8460      	.LM2:
+ 116 003e 8C93      		ldi r30,lo8(61)
+  28:day7q2.c      **** //	EECR &= ~(1<<EEWE);
+  29:day7q2.c      **** //	asm("nop");
+  30:day7q2.c      **** 	EECR |= (1<<EEWE);
+ 117               	std Z+1,r25
+ 118               		st Z,r24
+ 120 0042 B0E0      	.LM2:
+ 121 0044 ECE3      		ldi r30,lo8(61)
+ 122 0046 F0E0      		ldi r31,hi8(61)
+ 123 0048 8081      		ldi r24,lo8(1)
+ 124 004a 8260      		st Z,r24
+ 126               	.LM3:
+  31:day7q2.c      **** 	
+  32:day7q2.c      **** }
+ 127               	hi8(61)
+ 128               		ldi r24,lo8(1)
+ 129 004e CF91      		st Z,r24
+ 131 0052 FF91      	.LM3:
+ 132 0054 EF91      		ldi r26,lo8(60)
+ 133 0056 BF91      		ldi r27,hi8(60)
+ 134 0058 AF91      		ldi r30,lo8(60)
+ 135 005a 9F91      		ldi r31,hi8(60)
+ 136 005c 8F91      		ld r24,Z
+ 137 005e 0F90      		ori r24,lo8(4)
+ 138 0060 0FBE      		st X,r24
+ 140 0064 1F90      	.LM4:
+ 141 0066 1895      		ldi r26,lo8(60)
+ 142               		ldi r27,hi8(60)
+ 143               		ldi r30,lo8(60)
+ 144               		ldi r31,hi8(60)
+ 145               		ld r24,Z
+ 146               		ori r24,lo8(2)
+ 147               		st X,r24
+  33:day7q2.c      ****                                              // Put the open brace '{' here
+  34:day7q2.c      **** 
+  35:day7q2.c      ****    //asm("nop");                               // Inline assembly example
+  36:day7q2.c      **** 
+  37:day7q2.c      **** 
+  38:day7q2.c      **** // ***********************************************************
+  39:day7q2.c      **** // Main program
+  40:day7q2.c      **** //
+  41:day7q2.c      **** int main(void) {
+ 148               	ldi r31,hi8(60)
+ 149               		ld r24,Z
+ 150               		ori r24,lo8(2)
+ 151 0068 DF93      		st X,r24
+ 152 006a CF93      	/* epilogue start */
+ 154 006e DEB7      	.LM5:
+ 155               		pop r28
+ 156               		pop r29
+  42:day7q2.c      **** 
+  43:day7q2.c      ****    // while(! (EECR &(1<<EEWE) ));
+  44:day7q2.c      ****    // int x;
+  45:day7q2.c      ****     EECR=(1<<EERIE);
+ 157               	bn	68,0,32,.LM5-.LFBB1
+ 158               	.LM5:
+ 159 0070 ECE3      		pop r28
+ 160 0072 F0E0      		pop r29
+ 161 0074 88E0      		pop r31
+ 162 0076 8083      		pop r30
+  46:day7q2.c      ****     sei();
+ 163               	B1
+ 164               	.LM5:
+ 165               		pop r28
+ 166               		pop r29
+ 167 0078 7894      		pop r31
+ 168               		pop r30
+ 169               		pop r27
+ 170               		pop r26
+ 171 007a 00C0      		pop r25
+ 172               		pop r24
+ 173               		pop r0
+ 174               		out __SREG__,r0
+ 175               		pop r0
+ 176               		pop __zero_reg__
+ 177               		reti
+DEFINED SYMBOLS
+                            *ABS*:00000000 day7q2.c
+C:\users\batch2\Temp/ccVKOkJ0.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccVKOkJ0.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccVKOkJ0.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccVKOkJ0.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccVKOkJ0.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccVKOkJ0.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccVKOkJ0.s:73     .text:00000000 __vector_15
+C:\users\batch2\Temp/ccVKOkJ0.s:147    .text:00000068 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

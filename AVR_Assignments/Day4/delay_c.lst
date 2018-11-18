@@ -1,0 +1,195 @@
+   1               		.file	"delay_c.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	__vector_1
+  73               	__vector_1:
+   1:delay_c.c     **** // ***********************************************************
+   2:delay_c.c     **** // Project:
+   3:delay_c.c     **** // Author:
+   4:delay_c.c     **** // Module description:
+   5:delay_c.c     **** // ***********************************************************
+   6:delay_c.c     **** 
+   7:delay_c.c     **** #include <avr\io.h>              // Most basic include files
+   8:delay_c.c     **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:delay_c.c     **** #include <avr\signal.h>          // here
+  10:delay_c.c     **** 
+  11:delay_c.c     **** // Define here the global static variables
+  12:delay_c.c     **** //
+  13:delay_c.c     **** int My_global;
+  14:delay_c.c     **** 
+  15:delay_c.c     **** // Interrupt handler example for INT0
+  16:delay_c.c     **** //
+  17:delay_c.c     **** SIGNAL(SIG_INTERRUPT0) {
+  74               	 r0,__SREG__
+  75               		push r0
+  76               		clr __zero_reg__
+  77 0000 1F92      		push r29
+  78 0002 0F92      		push r28
+  79 0004 0FB6      		in r28,__SP_L__
+  80 0006 0F92      		in r29,__SP_H__
+  81 0008 1124      	/* prologue: Signal */
+  82 000a DF93      	/* frame size = 0 */
+  83 000c CF93      	/* epilogue start */
+  85 0010 DEB7      	.LM1:
+  86               		pop r28
+  87               		pop r29
+  88               		pop r0
+  18:delay_c.c     **** 
+  19:delay_c.c     **** }
+  89               	prologue: Signal */
+  90               	/* frame size = 0 */
+  91 0012 CF91      	/* epilogue start */
+  93 0016 0F90      	.LM1:
+  94 0018 0FBE      		pop r28
+  95 001a 0F90      		pop r29
+  96 001c 1F90      		pop r0
+  97 001e 1895      		out __SREG__,r0
+  98               		pop r0
+  99               		pop __zero_reg__
+ 100               		reti
+ 102               	.Lscope1:
+  20:delay_c.c     **** 
+  21:delay_c.c     **** // It is recommended to use this coding style to
+  22:delay_c.c     **** // follow better the mixed C-assembly code in the
+  23:delay_c.c     **** // Program Memory window
+  24:delay_c.c     **** //
+  25:delay_c.c     **** void delay_1ms(void);
+  26:delay_c.c     **** void delay_1ms(void)
+  27:delay_c.c     **** {
+ 104               	 r0
+ 105               		pop __zero_reg__
+ 106               		reti
+ 108 0022 CF93      	.Lscope1:
+ 110 0026 DEB7      	.global	delay_1ms
+ 112               	delay_1ms:
+  28:delay_c.c     **** 
+  29:delay_c.c     ****  TCNT1 = (255-125);
+ 113               	.Lscope1:
+ 115 0028 ECE4      	.global	delay_1ms
+ 117 002c 82E8      	delay_1ms:
+ 119 0030 9183      	.LM2:
+ 120 0032 8083      	.LFBB2:
+  30:delay_c.c     ****  TCCR1B= (1<<CS10);
+ 121               	delay_1ms
+ 122               	.global	delay_1ms
+ 124 0036 F0E0      	delay_1ms:
+ 126 003a 8083      	.LM2:
+  31:delay_c.c     **** 
+  32:delay_c.c     ****  while(TOV1 == 1);
+  33:delay_c.c     ****  TIFR = (1<< TOV1);
+ 127               	",36,0,0,delay_1ms
+ 128               	.global	delay_1ms
+ 130 003e F0E0      	delay_1ms:
+ 132 0042 8083      	.LM2:
+  34:delay_c.c     ****  TCNT1 = (255 - 125);
+ 133               	",36,0,0,delay_1ms
+ 134               	.global	delay_1ms
+ 136 0046 F0E0      	delay_1ms:
+ 138 004a 90E0      	.LM2:
+ 139 004c 9183      	.LFBB2:
+ 140 004e 8083      		push r29
+ 141               		push r28
+  35:delay_c.c     **** 
+  36:delay_c.c     **** }
+ 142               	y_1ms
+ 144 0050 CF91      	delay_1ms:
+ 146 0054 0895      	.LM2:
+ 147               	.LFBB2:
+ 148               		push r29
+ 149               		push r28
+ 150               		in r28,__SP_L__
+ 151               		in r29,__SP_H__
+ 152               	/* prologue: function */
+  37:delay_c.c     **** 
+  38:delay_c.c     **** // ***********************************************************
+  39:delay_c.c     **** // Main program
+  40:delay_c.c     **** //
+  41:delay_c.c     **** int main(void) {
+ 153               	LM2-.LFBB2
+ 154               	.LM2:
+ 155               	.LFBB2:
+ 156 0056 DF93      		push r29
+ 157 0058 CF93      		push r28
+ 158 005a 00D0      		in r28,__SP_L__
+ 159 005c CDB7      		in r29,__SP_H__
+ 160 005e DEB7      	/* prologue: function */
+ 161               	/* frame size = 0 */
+  42:delay_c.c     **** 
+  43:delay_c.c     **** DDRD = 255;
+ 163               	8,__SP_L__
+ 164               		in r29,__SP_H__
+ 165 0060 E1E3      	/* prologue: function */
+ 166 0062 F0E0      	/* frame size = 0 */
+ 168 0066 8083      	.LM3:
+ 169               		ldi r30,lo8(76)
+  44:delay_c.c     **** 
+  45:delay_c.c     ****    while(1) {             // Infinite loop; define here the
+  46:delay_c.c     ****        PORTD = 0xA0;
+ 170               	__
+ 171               	/* prologue: function */
+ 172 0068 E2E3      	/* frame size = 0 */
+ 174 006c 80EA      	.LM3:
+ 175 006e 8083      		ldi r30,lo8(76)
+ 176               		ldi r31,hi8(76)
+  47:delay_c.c     ****       for(int i = 0 ; i <10; i ++)
+ 177               	nction */
+ 178               	/* frame size = 0 */
+ 180 0072 1982      	.LM3:
+ 181 0074 00C0      		ldi r30,lo8(76)
+ 182               		ldi r31,hi8(76)
+  48:delay_c.c     **** 		{	
+  49:delay_c.c     **** 			delay_1ms();
+ 183               	nction */
+ 184               	/* frame size = 0 */
+ 186               	.LM3:
+ 187               		ldi r30,lo8(76)
+ 188 0078 8981      		ldi r31,hi8(76)
+ 189 007a 9A81      		ldi r24,lo8(130)
+ 190 007c 0196      		ldi r25,hi8(130)
+ 191 007e 9A83      		std Z+1,r25
+ 192 0080 8983      		st Z,r24
+ 194 0082 8981      	.LM4:
+ 195 0084 9A81      		ldi r30,lo8(78)
+ 196 0086 8A30      		ldi r31,hi8(78)
+ 197 0088 9105      		ldi r24,lo8(1)
+ 198 008a 04F0      		st Z,r24
+  50:delay_c.c     **** 		}
+  51:delay_c.c     ****        PORTD = 0x50;    // system behaviour
+ 200               		ldi r30,lo8(78)
+ 201               		ldi r31,hi8(78)
+ 202 008c E2E3      		ldi r24,lo8(1)
+ 203 008e F0E0      		st Z,r24
+ 205 0092 8083      	.LM5:
+ 206 0094 00C0      		ldi r30,lo8(88)
+ 207               		ldi r31,hi8(88)
+ 208               		ldi r24,lo8(4)
+ 209               		st Z,r24
+ 211               	.LM6:
+ 212               		ldi r30,lo8(76)
+ 213               		ldi r31,hi8(76)
+ 214               		ldi r24,lo8(130)
+ 215               		ldi r25,hi8(130)
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay_c.c
+C:\users\batch2\Temp/cc9U7KVL.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/cc9U7KVL.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/cc9U7KVL.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/cc9U7KVL.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/cc9U7KVL.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/cc9U7KVL.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/cc9U7KVL.s:73     .text:00000000 __vector_1
+C:\users\batch2\Temp/cc9U7KVL.s:103    .text:00000020 delay_1ms
+C:\users\batch2\Temp/cc9U7KVL.s:152    .text:00000056 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

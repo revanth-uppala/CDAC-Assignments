@@ -1,0 +1,187 @@
+   1               		.file	"day4q3.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  70               	.global	flag
+  71               	.global	flag
+  72               		.section .bss
+  75               	flag:
+  76 0000 0000      		.skip 2,0
+  77               		.text
+  79               	.global	__vector_8
+  81               	__vector_8:
+   1:day4q3.c      **** // ***********************************************************
+   2:day4q3.c      **** // Project : Design & Write a code to generate Maximum delay using Timer/Counter1:
+   3:day4q3.c      **** // Author:Souvik
+   4:day4q3.c      **** // Module description: gives approx 67 secs delay
+   5:day4q3.c      **** // ***********************************************************
+   6:day4q3.c      **** 
+   7:day4q3.c      **** #include <avr\io.h>              // Most basic include files
+   8:day4q3.c      **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:day4q3.c      **** #include <avr\signal.h>          // here
+  10:day4q3.c      **** 
+  11:day4q3.c      **** // Define here the global static variables
+  12:day4q3.c      **** //
+  13:day4q3.c      **** int flag = 0;
+  14:day4q3.c      **** ISR(TIMER1_OVF_vect )
+  15:day4q3.c      **** {
+  82               	EG__
+  83               		push r0
+  84               		clr __zero_reg__
+  85 0000 1F92      		push r24
+  86 0002 0F92      		push r25
+  87 0004 0FB6      		push r29
+  88 0006 0F92      		push r28
+  89 0008 1124      		in r28,__SP_L__
+  90 000a 8F93      		in r29,__SP_H__
+  91 000c 9F93      	/* prologue: Signal */
+  92 000e DF93      	/* frame size = 0 */
+  94 0012 CDB7      	.LM1:
+  95 0014 DEB7      		ldi r24,lo8(1)
+  96               		ldi r25,hi8(1)
+  97               		sts (flag)+1,r25
+  16:day4q3.c      ****  	flag = 1;
+  98               	* frame size = 0 */
+ 100 0016 81E0      	.LM1:
+ 101 0018 90E0      		ldi r24,lo8(1)
+ 102 001a 9093 0000 		ldi r25,hi8(1)
+ 103 001e 8093 0000 		sts (flag)+1,r25
+ 104               		sts flag,r24
+  17:day4q3.c      **** }
+ 105               	0 */
+ 107 0022 CF91      	.LM1:
+ 108 0024 DF91      		ldi r24,lo8(1)
+ 109 0026 9F91      		ldi r25,hi8(1)
+ 110 0028 8F91      		sts (flag)+1,r25
+ 111 002a 0F90      		sts flag,r24
+ 112 002c 0FBE      	/* epilogue start */
+ 114 0030 1F90      	.LM2:
+ 115 0032 1895      		pop r28
+ 116               		pop r29
+ 117               		pop r25
+ 118               		pop r24
+ 119               		pop r0
+ 120               		out __SREG__,r0
+ 121               		pop r0
+  18:day4q3.c      **** 
+  19:day4q3.c      **** // Interrupt handler example for INT0
+  20:day4q3.c      **** //
+  21:day4q3.c      **** 
+  22:day4q3.c      **** // It is recommended to use this coding style to
+  23:day4q3.c      **** // follow better the mixed C-assembly code in the
+  24:day4q3.c      **** // Program Memory window
+  25:day4q3.c      **** //
+  26:day4q3.c      **** 
+  27:day4q3.c      **** 
+  28:day4q3.c      **** // ***********************************************************
+  29:day4q3.c      **** // Main program
+  30:day4q3.c      **** //
+  31:day4q3.c      **** int main(void) {
+ 122               	,0,17,.LM2-.LFBB1
+ 123               	.LM2:
+ 124               		pop r28
+ 125 0034 DF93      		pop r29
+ 126 0036 CF93      		pop r25
+ 127 0038 00D0      		pop r24
+ 128 003a 0F92      		pop r0
+ 129 003c CDB7      		out __SREG__,r0
+ 130 003e DEB7      		pop r0
+ 131               		pop __zero_reg__
+ 132               		reti
+  32:day4q3.c      ****    DDRB = (1<<PB0);
+ 133               	op r28
+ 134               		pop r29
+ 135 0040 E7E3      		pop r25
+ 136 0042 F0E0      		pop r24
+ 137 0044 81E0      		pop r0
+ 138 0046 8083      		out __SREG__,r0
+  33:day4q3.c      **** 
+  34:day4q3.c      **** 	 TIMSK |= (1<< TOIE1);
+ 140               	.LM2:
+ 141 0048 A9E5      		pop r28
+ 142 004a B0E0      		pop r29
+ 143 004c E9E5      		pop r25
+ 144 004e F0E0      		pop r24
+ 145 0050 8081      		pop r0
+ 146 0052 8460      		out __SREG__,r0
+ 147 0054 8C93      		pop r0
+  35:day4q3.c      ****    TCNT1= 0;
+ 148               	,0,17,.LM2-.LFBB1
+ 149               	.LM2:
+ 150 0056 ECE4      		pop r28
+ 151 0058 F0E0      		pop r29
+ 152 005a 1182      		pop r25
+ 153 005c 1082      		pop r24
+  36:day4q3.c      ****    TCCR1B |= (1<<CS10)|(1<<CS12);
+ 154               	,r24
+ 155               	/* epilogue start */
+ 157 0060 B0E0      	.LM2:
+ 158 0062 EEE4      		pop r28
+ 159 0064 F0E0      		pop r29
+ 160 0066 8081      		pop r25
+ 161 0068 8560      		pop r24
+ 162 006a 8C93      		pop r0
+  37:day4q3.c      ****    sei();
+ 163               	pilogue start */
+ 165               	.LM2:
+ 166               		pop r28
+ 167 006c 7894      		pop r29
+ 168               		pop r25
+ 169               		pop r24
+ 170               		pop r0
+  38:day4q3.c      ****    while(1) {             // Infinite loop; define here the
+  39:day4q3.c      ****      if(flag ==1)
+ 171               	pilogue start */
+ 173 006e 8091 0000 	.LM2:
+ 174 0072 9091 0000 		pop r28
+ 175 0076 8130      		pop r29
+ 176 0078 9105      		pop r25
+ 177 007a 01F4      		pop r24
+  40:day4q3.c      ****      {
+  41:day4q3.c      ****      	flag = 0;
+ 178               	,r24
+ 179               	/* epilogue start */
+ 181 0080 1092 0000 	.LM2:
+  42:day4q3.c      ****      	PORTB = !PORTB;
+ 182               	i r25,hi8(1)
+ 183               		sts (flag)+1,r25
+ 184 0084 88E3      		sts flag,r24
+ 185 0086 90E0      	/* epilogue start */
+ 187 008a 8A83      	.LM2:
+ 188 008c E8E3      		pop r28
+ 189 008e F0E0      		pop r29
+ 190 0090 8081      		pop r25
+ 191 0092 1982      		pop r24
+ 192 0094 8823      		pop r0
+ 193 0096 01F4      		out __SREG__,r0
+ 194 0098 91E0      		pop r0
+ 195 009a 9983      		pop __zero_reg__
+ 196               		reti
+ 198 009e EA81      	.Lscope1:
+ 200 00a2 8083      	.global	main
+ 202               	main:
+ 204               	.LM3:
+ 205               	.LFBB2:
+ 206               		push r29
+DEFINED SYMBOLS
+                            *ABS*:00000000 day4q3.c
+C:\users\batch2\Temp/cccgmljF.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/cccgmljF.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/cccgmljF.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/cccgmljF.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/cccgmljF.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/cccgmljF.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/cccgmljF.s:75     .bss:00000000 flag
+C:\users\batch2\Temp/cccgmljF.s:81     .text:00000000 __vector_8
+C:\users\batch2\Temp/cccgmljF.s:121    .text:00000034 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

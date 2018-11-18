@@ -1,0 +1,72 @@
+#include <stdio.h>
+
+int main(int argc,char *argv[])
+{
+	pid_t id;
+	int ret;
+ 	char str[]="gcc -S -o target";
+	char str2[]="/bin/sh";
+	strcat(str,argv[1]);
+	id=fork();
+	if(-1 == id)
+	{
+		perror("FORK:");
+		exit(0);
+	}
+	else if(0 == id)
+	{
+		ret=execlp(str2,str);
+		if(-1 == ret)
+		{
+			perror("EXEC:");
+		}
+		
+	}
+	else
+	{
+		int count=0;
+		float ex_time=0;
+		ret=wait(&status);
+		FILE *fp;
+		fp=fopen("target","r");
+		if(fp==-1)
+		{
+			printf("error in opening file\n");
+		}
+		else
+		{
+			char c=fgetc(fp);
+			while(c != EOF)
+			{
+							
+				if(c == '.')
+				{
+					while(c != '\n')
+					{
+						c=fgetc(fp);
+					}
+					c=fgetc(fp);
+					
+
+				}
+				else
+				{
+					while(c! = '\n')
+					{
+						buff[i++]=c;
+						c=fgetc(fp);
+					}
+					
+					if(strcmp(buff,"main:") == 0)
+					{
+						
+					}
+					else	
+					{
+						count++;
+					}
+					c=fgetc(fp);
+				}
+			}
+			ex_time = count * atoi(argv[2]) * 
+			

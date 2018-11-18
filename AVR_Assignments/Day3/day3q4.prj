@@ -1,0 +1,33 @@
+; ************************************************************
+; PROJECT:
+; AUTHOR:
+; ************************************************************
+
+; Micro + software running
+; ------------------------------------------------------------
+.MICRO "ATmega8"
+.PROGRAM "day3q4.asm"
+.TARGET "day3q4.hex"
+D1 VDD PB0  ; x: Panel LEDs1-8
+D2 VDD PB1  ; x: Panel LEDs 1 - 8
+D3 VDD PB2 ; x: Panel LEDs 1 - 8
+D4 VDD PB3 ; x: Panel LEDs 1 - 8
+D5 VDD PB4 ; x: Panel LEDs 1 - 8
+D6 VDD PB5  ; x: Panel LEDs 1 - 8
+D7 VDD PB6  ; x: Panel LEDs 1 - 8
+D8 VDD PB7  ; x: Panel LEDs 1 - 8
+
+.TRACE              ; Activate micro trace
+
+; Following lines are optional; if not included
+; exactly these values are taken by default
+; ------------------------------------------------------------
+.POWER VDD=5 VSS=0  ; Power nodes
+.CLOCK 1meg         ; Micro clock
+.STORE 250m         ; Trace (micro+signals) storage time
+
+; Micro nodes: RESET, AREF, PB0-PB7, PC0-PC6, PD0-PD7, ACO, TIM1OVF, ADC6, ADC7
+; Define here the hardware around the micro
+; ------------------------------------------------------------
+
+

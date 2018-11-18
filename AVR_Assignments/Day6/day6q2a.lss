@@ -1,0 +1,181 @@
+
+day6q2a.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000ea  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000002  00800060  000000ea  0000015e  2**0
+                  ALLOC
+  2 .stab         0000036c  00000000  00000000  00000160  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      0000066c  00000000  00000000  000004cc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2d c0       	rjmp	.+90     	; 0x5e <__vector_1>
+   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	ea ee       	ldi	r30, 0xEA	; 234
+  3a:	f0 e0       	ldi	r31, 0x00	; 0
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <.do_copy_data_start>
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a0 36       	cpi	r26, 0x60	; 96
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <.do_copy_data_loop>
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a0 e6       	ldi	r26, 0x60	; 96
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a2 36       	cpi	r26, 0x62	; 98
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	23 d0       	rcall	.+70     	; 0xa0 <main>
+  5a:	45 c0       	rjmp	.+138    	; 0xe6 <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <__vector_1>:
+int My_global;
+
+// Interrupt handler example for INT0
+//
+ISR(        INT0_vect )
+{
+  5e:	1f 92       	push	r1
+  60:	0f 92       	push	r0
+  62:	0f b6       	in	r0, 0x3f	; 63
+  64:	0f 92       	push	r0
+  66:	11 24       	eor	r1, r1
+  68:	8f 93       	push	r24
+  6a:	af 93       	push	r26
+  6c:	bf 93       	push	r27
+  6e:	ef 93       	push	r30
+  70:	ff 93       	push	r31
+  72:	df 93       	push	r29
+  74:	cf 93       	push	r28
+  76:	cd b7       	in	r28, 0x3d	; 61
+  78:	de b7       	in	r29, 0x3e	; 62
+//	PORTD ^= (1<<PD4);
+PORTD=~(PORTD);
+  7a:	a2 e3       	ldi	r26, 0x32	; 50
+  7c:	b0 e0       	ldi	r27, 0x00	; 0
+  7e:	e2 e3       	ldi	r30, 0x32	; 50
+  80:	f0 e0       	ldi	r31, 0x00	; 0
+  82:	80 81       	ld	r24, Z
+  84:	80 95       	com	r24
+  86:	8c 93       	st	X, r24
+}
+  88:	cf 91       	pop	r28
+  8a:	df 91       	pop	r29
+  8c:	ff 91       	pop	r31
+  8e:	ef 91       	pop	r30
+  90:	bf 91       	pop	r27
+  92:	af 91       	pop	r26
+  94:	8f 91       	pop	r24
+  96:	0f 90       	pop	r0
+  98:	0f be       	out	0x3f, r0	; 63
+  9a:	0f 90       	pop	r0
+  9c:	1f 90       	pop	r1
+  9e:	18 95       	reti
+
+000000a0 <main>:
+
+
+// ***********************************************************
+// Main program
+//
+int main(void) {
+  a0:	df 93       	push	r29
+  a2:	cf 93       	push	r28
+  a4:	cd b7       	in	r28, 0x3d	; 61
+  a6:	de b7       	in	r29, 0x3e	; 62
+ 	MCUCR |= BV(SE)| BV(ISC01);//enable sleep and falling edge
+  a8:	a5 e5       	ldi	r26, 0x55	; 85
+  aa:	b0 e0       	ldi	r27, 0x00	; 0
+  ac:	e5 e5       	ldi	r30, 0x55	; 85
+  ae:	f0 e0       	ldi	r31, 0x00	; 0
+  b0:	80 81       	ld	r24, Z
+  b2:	82 68       	ori	r24, 0x82	; 130
+  b4:	8c 93       	st	X, r24
+ 	DDRD |= BV(PD4)| BC(PD2); //PD4 output,PD2input
+  b6:	a1 e3       	ldi	r26, 0x31	; 49
+  b8:	b0 e0       	ldi	r27, 0x00	; 0
+  ba:	e1 e3       	ldi	r30, 0x31	; 49
+  bc:	f0 e0       	ldi	r31, 0x00	; 0
+  be:	80 81       	ld	r24, Z
+  c0:	80 61       	ori	r24, 0x10	; 16
+  c2:	8c 93       	st	X, r24
+ 	PORTD |= BV(PD2); //pullup PD2	
+  c4:	a2 e3       	ldi	r26, 0x32	; 50
+  c6:	b0 e0       	ldi	r27, 0x00	; 0
+  c8:	e2 e3       	ldi	r30, 0x32	; 50
+  ca:	f0 e0       	ldi	r31, 0x00	; 0
+  cc:	80 81       	ld	r24, Z
+  ce:	84 60       	ori	r24, 0x04	; 4
+  d0:	8c 93       	st	X, r24
+	GICR |= BV(INT0);  //INT0 enable
+  d2:	ab e5       	ldi	r26, 0x5B	; 91
+  d4:	b0 e0       	ldi	r27, 0x00	; 0
+  d6:	eb e5       	ldi	r30, 0x5B	; 91
+  d8:	f0 e0       	ldi	r31, 0x00	; 0
+  da:	80 81       	ld	r24, Z
+  dc:	80 64       	ori	r24, 0x40	; 64
+  de:	8c 93       	st	X, r24
+	sei();
+  e0:	78 94       	sei
+
+	
+   while(1) {             // Infinite loop; define here the
+     asm("sleep");      // system behaviour
+  e2:	88 95       	sleep
+  e4:	fe cf       	rjmp	.-4      	; 0xe2 <main+0x42>
+
+000000e6 <_exit>:
+  e6:	f8 94       	cli
+
+000000e8 <__stop_program>:
+  e8:	ff cf       	rjmp	.-2      	; 0xe8 <__stop_program>

@@ -1,0 +1,225 @@
+   1               		.file	"delayctc.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  70               	.global	flag
+  71               	.global	flag
+  72               		.section .bss
+  75               	flag:
+  76 0000 0000      		.skip 2,0
+  77               		.text
+  79               	.global	__vector_1
+  81               	__vector_1:
+   1:delayctc.c    **** // ***********************************************************
+   2:delayctc.c    **** // Project:
+   3:delayctc.c    **** // Author:
+   4:delayctc.c    **** // Module description:
+   5:delayctc.c    **** // ***********************************************************
+   6:delayctc.c    **** 
+   7:delayctc.c    **** #include <avr\io.h>              // Most basic include files
+   8:delayctc.c    **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:delayctc.c    **** #include <avr\signal.h>          // here
+  10:delayctc.c    **** 
+  11:delayctc.c    **** // Define here the global static variables
+  12:delayctc.c    **** //
+  13:delayctc.c    **** int My_global;
+  14:delayctc.c    **** int flag = 0;
+  15:delayctc.c    **** // Interrupt handler example for INT0
+  16:delayctc.c    **** //
+  17:delayctc.c    **** SIGNAL(SIG_INTERRUPT0) {
+  82               	EG__
+  83               		push r0
+  84               		clr __zero_reg__
+  85 0000 1F92      		push r29
+  86 0002 0F92      		push r28
+  87 0004 0FB6      		in r28,__SP_L__
+  88 0006 0F92      		in r29,__SP_H__
+  89 0008 1124      	/* prologue: Signal */
+  90 000a DF93      	/* frame size = 0 */
+  91 000c CF93      	/* epilogue start */
+  93 0010 DEB7      	.LM1:
+  94               		pop r28
+  95               		pop r29
+  96               		pop r0
+  18:delayctc.c    **** 
+  19:delayctc.c    **** }
+  97               		in r29,__SP_H__
+  98               	/* prologue: Signal */
+  99 0012 CF91      	/* frame size = 0 */
+ 100 0014 DF91      	/* epilogue start */
+ 102 0018 0FBE      	.LM1:
+ 103 001a 0F90      		pop r28
+ 104 001c 1F90      		pop r29
+ 105 001e 1895      		pop r0
+ 106               		out __SREG__,r0
+ 107               		pop r0
+ 108               		pop __zero_reg__
+ 109               		reti
+ 111               	.Lscope1:
+  20:delayctc.c    **** 
+  21:delayctc.c    **** // It is recommended to use this coding style to
+  22:delayctc.c    **** ISR(TIMER2_COMP_vect)
+  23:delayctc.c    **** {
+ 112               	,.LM1-.LFBB1
+ 113               	.LM1:
+ 114               		pop r28
+ 115 0020 1F92      		pop r29
+ 116 0022 0F92      		pop r0
+ 117 0024 0FB6      		out __SREG__,r0
+ 118 0026 0F92      		pop r0
+ 119 0028 1124      		pop __zero_reg__
+ 120 002a 8F93      		reti
+ 122 002e DF93      	.Lscope1:
+ 124 0032 00D0      	.global	__vector_3
+ 126 0036 DEB7      	__vector_3:
+ 128               	.LM2:
+  24:delayctc.c    ****     flag = !flag;
+ 129               	vector_3:F(0,15)",36,0,0,__vector_3
+ 130               	.global	__vector_3
+ 132 003c 9091 0000 	__vector_3:
+ 134 0042 1982      	.LM2:
+ 135 0044 0097      	.LFBB2:
+ 136 0046 01F4      		push __zero_reg__
+ 137 0048 81E0      		push r0
+ 138 004a 90E0      		in r0,__SREG__
+ 139 004c 9A83      		push r0
+ 140 004e 8983      		clr __zero_reg__
+ 141               		push r24
+ 142 0050 8981      		push r25
+ 143 0052 9A81      		push r29
+ 144 0054 9093 0000 		push r28
+ 145 0058 8093 0000 		rcall .
+ 146               		in r28,__SP_L__
+  25:delayctc.c    **** }
+ 147               		push r0
+ 148               		in r0,__SREG__
+ 149 005c 0F90      		push r0
+ 150 005e 0F90      		clr __zero_reg__
+ 151 0060 CF91      		push r24
+ 152 0062 DF91      		push r25
+ 153 0064 9F91      		push r29
+ 154 0066 8F91      		push r28
+ 155 0068 0F90      		rcall .
+ 156 006a 0FBE      		in r28,__SP_L__
+ 157 006c 0F90      		in r29,__SP_H__
+ 158 006e 1F90      	/* prologue: Signal */
+ 159 0070 1895      	/* frame size = 2 */
+ 161               	.LM3:
+ 162               		lds r24,flag
+ 163               		lds r25,(flag)+1
+ 164               		std Y+2,__zero_reg__
+ 165               		std Y+1,__zero_reg__
+  26:delayctc.c    **** 
+  27:delayctc.c    **** int main(void) {
+ 167               	.LM3:
+ 168               		lds r24,flag
+ 169 0072 DF93      		lds r25,(flag)+1
+ 170 0074 CF93      		std Y+2,__zero_reg__
+ 171 0076 CDB7      		std Y+1,__zero_reg__
+ 172 0078 DEB7      		sbiw r24,0
+ 173               		brne .L4
+ 174               		ldi r24,lo8(1)
+  28:delayctc.c    ****  DDRD = 0xF0;   //PortD higher nibble as output
+ 175               	,flag
+ 176               		lds r25,(flag)+1
+ 177 007a E1E3      		std Y+2,__zero_reg__
+ 178 007c F0E0      		std Y+1,__zero_reg__
+ 179 007e 80EF      		sbiw r24,0
+ 180 0080 8083      		brne .L4
+  29:delayctc.c    ****  TCNT2 = 0;
+ 181               	B2
+ 182               	.LM3:
+ 183 0082 E4E4      		lds r24,flag
+ 184 0084 F0E0      		lds r25,(flag)+1
+ 185 0086 1082      		std Y+2,__zero_reg__
+  30:delayctc.c    ****  OCR2 = 61;   //compare value for 1sec
+ 186               	
+ 187               	/* frame size = 2 */
+ 189 008a F0E0      	.LM3:
+ 190 008c 8DE3      		lds r24,flag
+ 191 008e 8083      		lds r25,(flag)+1
+  31:delayctc.c    ****  TIMSK  = TIMSK |  (1<<OCIE2);//enable Timer2 OC interrupt
+ 192               	
+ 193               	/* prologue: Signal */
+ 194 0090 A9E5      	/* frame size = 2 */
+ 196 0094 E9E5      	.LM3:
+ 197 0096 F0E0      		lds r24,flag
+ 198 0098 8081      		lds r25,(flag)+1
+ 199 009a 8068      		std Y+2,__zero_reg__
+ 200 009c 8C93      		std Y+1,__zero_reg__
+  32:delayctc.c    ****  TCCR2  = TCCR2 | (1<< CS21)| (1 << WGM21);
+ 202               	.LM3:
+ 203 009e A5E4      		lds r24,flag
+ 204 00a0 B0E0      		lds r25,(flag)+1
+ 205 00a2 E5E4      		std Y+2,__zero_reg__
+ 206 00a4 F0E0      		std Y+1,__zero_reg__
+ 207 00a6 8081      		sbiw r24,0
+ 208 00a8 8A60      		brne .L4
+ 209 00aa 8C93      		ldi r24,lo8(1)
+  33:delayctc.c    **** 
+  34:delayctc.c    ****  sei();
+ 210               	,flag
+ 211               		lds r25,(flag)+1
+ 212               		std Y+2,__zero_reg__
+ 213               		std Y+1,__zero_reg__
+ 214 00ac 7894      		sbiw r24,0
+ 215               		brne .L4
+ 216               		ldi r24,lo8(1)
+ 217               		ldi r25,hi8(1)
+  35:delayctc.c    **** 
+  36:delayctc.c    ****    while(1) {             // Infinite loop; define here the
+  37:delayctc.c    ****       PORTD = 0x00;
+ 218               	lag)+1
+ 219               		std Y+2,__zero_reg__
+ 220 00ae E2E3      		std Y+1,__zero_reg__
+ 221 00b0 F0E0      		sbiw r24,0
+ 222 00b2 1082      		brne .L4
+  38:delayctc.c    **** 		if(flag ==1)
+ 223               	B2
+ 224               	.LM3:
+ 225 00b4 8091 0000 		lds r24,flag
+ 226 00b8 9091 0000 		lds r25,(flag)+1
+ 227 00bc 8130      		std Y+2,__zero_reg__
+ 228 00be 9105      		std Y+1,__zero_reg__
+ 229 00c0 01F4      		sbiw r24,0
+  39:delayctc.c    **** 
+  40:delayctc.c    ****      {
+  41:delayctc.c    ****       	PORTD = 0xFF;
+ 230               	4,.LM3-.LFBB2
+ 231               	.LM3:
+ 232 00c2 E2E3      		lds r24,flag
+ 233 00c4 F0E0      		lds r25,(flag)+1
+ 234 00c6 8FEF      		std Y+2,__zero_reg__
+ 235 00c8 8083      		std Y+1,__zero_reg__
+ 236 00ca 00C0      		sbiw r24,0
+ 237               		brne .L4
+ 238               		ldi r24,lo8(1)
+ 239               		ldi r25,hi8(1)
+ 240               		std Y+2,r25
+ 241               		std Y+1,r24
+ 242               	.L4:
+ 243               		ldd r24,Y+1
+DEFINED SYMBOLS
+                            *ABS*:00000000 delayctc.c
+C:\users\batch2\Temp/ccRDtTYE.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccRDtTYE.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccRDtTYE.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccRDtTYE.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccRDtTYE.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccRDtTYE.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccRDtTYE.s:75     .bss:00000000 flag
+C:\users\batch2\Temp/ccRDtTYE.s:81     .text:00000000 __vector_1
+C:\users\batch2\Temp/ccRDtTYE.s:111    .text:00000020 __vector_3
+C:\users\batch2\Temp/ccRDtTYE.s:165    .text:00000072 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

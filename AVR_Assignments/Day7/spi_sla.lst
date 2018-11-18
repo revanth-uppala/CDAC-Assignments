@@ -1,0 +1,166 @@
+   1               		.file	"spi_sla.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	SPI_SlaveInit
+  73               	SPI_SlaveInit:
+   1:spi_sla.c     **** // ***********************************************************
+   2:spi_sla.c     **** // Project:
+   3:spi_sla.c     **** // Author:
+   4:spi_sla.c     **** // Module description:
+   5:spi_sla.c     **** // ***********************************************************
+   6:spi_sla.c     **** 
+   7:spi_sla.c     **** #include <avr\io.h>              // Most basic include files
+   8:spi_sla.c     **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:spi_sla.c     **** #include <avr\signal.h>          // here
+  10:spi_sla.c     **** #define DDR_SPI DDRB
+  11:spi_sla.c     **** #define DD_MISO PB4
+  12:spi_sla.c     **** #define SS PB2
+  13:spi_sla.c     **** #define dataport PORTD
+  14:spi_sla.c     **** // Define here the global static variables
+  15:spi_sla.c     **** //
+  16:spi_sla.c     **** 
+  17:spi_sla.c     **** 
+  18:spi_sla.c     **** // Interrupt handler example for INT0
+  19:spi_sla.c     **** //
+  20:spi_sla.c     **** 
+  21:spi_sla.c     **** 
+  22:spi_sla.c     **** // It is recommended to use this coding style to
+  23:spi_sla.c     **** // follow better the mixed C-assembly code in the
+  24:spi_sla.c     **** // Program Memory window
+  25:spi_sla.c     **** //
+  26:spi_sla.c     **** void SPI_SlaveInit(void)
+  27:spi_sla.c     **** {
+  74               	P_L__
+  75               		in r29,__SP_H__
+  76               	/* prologue: function */
+  77 0000 DF93      	/* frame size = 0 */
+  79 0004 CDB7      	.LM1:
+  80 0006 DEB7      		ldi r30,lo8(55)
+  81               		ldi r31,hi8(55)
+  82               		ldi r24,lo8(16)
+  28:spi_sla.c     **** /* Set MISO output, all others input */
+  29:spi_sla.c     **** DDR_SPI = (1<<DD_MISO);
+  83               	*/
+  85 0008 E7E3      	.LM1:
+  86 000a F0E0      		ldi r30,lo8(55)
+  87 000c 80E1      		ldi r31,hi8(55)
+  88 000e 8083      		ldi r24,lo8(16)
+  30:spi_sla.c     **** /* Enable SPI */
+  31:spi_sla.c     **** SPCR = (1<<SPE);
+  89               	*/
+  91 0010 EDE2      	.LM1:
+  92 0012 F0E0      		ldi r30,lo8(55)
+  93 0014 80E4      		ldi r31,hi8(55)
+  94 0016 8083      		ldi r24,lo8(16)
+  95               		st Z,r24
+  32:spi_sla.c     **** }
+  96               	68,0,29,.LM1-.LFBB1
+  97               	.LM1:
+  98 0018 CF91      		ldi r30,lo8(55)
+  99 001a DF91      		ldi r31,hi8(55)
+ 100 001c 0895      		ldi r24,lo8(16)
+ 101               		st Z,r24
+ 103               	.LM2:
+ 104               		ldi r30,lo8(45)
+ 105               		ldi r31,hi8(45)
+ 106               		ldi r24,lo8(64)
+  33:spi_sla.c     **** char SPI_SlaveReceive(void)
+  34:spi_sla.c     **** {
+ 107               	tabn	68,0,31,.LM2-.LFBB1
+ 108               	.LM2:
+ 109               		ldi r30,lo8(45)
+ 110 001e DF93      		ldi r31,hi8(45)
+ 111 0020 CF93      		ldi r24,lo8(64)
+ 112 0022 CDB7      		st Z,r24
+ 113 0024 DEB7      	/* epilogue start */
+ 115               	.LM3:
+ 116               		pop r28
+  35:spi_sla.c     **** /* Wait for reception complete */
+  36:spi_sla.c     **** while(!(SPSR & (1<<SPIF)))
+ 117               	4)
+ 118               		st Z,r24
+ 119 0026 EEE2      	/* epilogue start */
+ 121 002a 8081      	.LM3:
+ 122 002c 8823      		pop r28
+ 123 002e 04F4      		pop r29
+  37:spi_sla.c     **** ;
+  38:spi_sla.c     **** /* Return data register */
+  39:spi_sla.c     **** return SPDR;
+ 124               	24
+ 125               	/* epilogue start */
+ 127 0032 F0E0      	.LM3:
+ 128 0034 8081      		pop r28
+ 129               		pop r29
+  40:spi_sla.c     **** }
+ 130               	24
+ 131               	/* epilogue start */
+ 133 0038 DF91      	.LM3:
+ 134 003a 0895      		pop r28
+ 135               		pop r29
+ 136               		ret
+ 138               	.Lscope1:
+ 140               	.global	SPI_SlaveReceive
+  41:spi_sla.c     **** 
+  42:spi_sla.c     **** // ***********************************************************
+  43:spi_sla.c     **** // Main program
+  44:spi_sla.c     **** //
+  45:spi_sla.c     **** int main(void) {
+ 141               	_SlaveReceive:F(0,2)",36,0,0,SPI_SlaveReceive
+ 142               	.global	SPI_SlaveReceive
+ 144 003c 0F93      	SPI_SlaveReceive:
+ 146 0040 DF93      	.LM4:
+ 147 0042 CF93      	.LFBB2:
+ 148 0044 CDB7      		push r29
+ 149 0046 DEB7      		push r28
+ 150               		in r28,__SP_L__
+ 151               		in r29,__SP_H__
+  46:spi_sla.c     **** DDRD = 0xFF;
+ 152               	.LFBB2:
+ 153               		push r29
+ 154 0048 E1E3      		push r28
+ 155 004a F0E0      		in r28,__SP_L__
+ 156 004c 8FEF      		in r29,__SP_H__
+ 157 004e 8083      	/* prologue: function */
+  47:spi_sla.c     **** dataport = 0;
+ 158               	8
+ 159               		in r28,__SP_L__
+ 160 0050 E2E3      		in r29,__SP_H__
+ 161 0052 F0E0      	/* prologue: function */
+ 162 0054 1082      	/* frame size = 0 */
+ 163               	.L4:
+  48:spi_sla.c     ****    while(1) {             // Infinite loop; define here the
+  49:spi_sla.c     ****      // SPDR = 0xAA;
+  50:spi_sla.c     ****       dataport =   SPI_SlaveReceive();   // system behaviour
+ 164               	_SP_H__
+ 165               	/* prologue: function */
+ 166 0056 02E3      	/* frame size = 0 */
+ 167 0058 10E0      	.L4:
+ 169 005c F801      	.LM5:
+ 170 005e 8083      		ldi r30,lo8(46)
+ 171 0060 00C0      		ldi r31,hi8(46)
+ 172               		ld r24,Z
+ 173               		tst r24
+ 174               		brge .L4
+DEFINED SYMBOLS
+                            *ABS*:00000000 spi_sla.c
+C:\users\batch2\Temp/ccEde57R.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccEde57R.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccEde57R.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccEde57R.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccEde57R.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccEde57R.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccEde57R.s:73     .text:00000000 SPI_SlaveInit
+C:\users\batch2\Temp/ccEde57R.s:106    .text:0000001e SPI_SlaveReceive
+C:\users\batch2\Temp/ccEde57R.s:140    .text:0000003c main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

@@ -1,0 +1,197 @@
+   1               		.file	"delay.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  70               	.global	flag
+  71               	.global	flag
+  72               		.section .bss
+  75               	flag:
+  76 0000 0000      		.skip 2,0
+  77               		.text
+  80               	.global	delay
+  82               	delay:
+   1:delay.c       **** // ***********************************************************
+   2:delay.c       **** // Project : Design & Write a code to generate Maximum delay using Timer/Counter1:
+   3:delay.c       **** // Author:Souvik
+   4:delay.c       **** // Module description: gives approx 67 secs delay
+   5:delay.c       **** // ***********************************************************
+   6:delay.c       **** 
+   7:delay.c       **** #include <avr\io.h>              // Most basic include files
+   8:delay.c       **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:delay.c       **** #include <avr\signal.h>          // here
+  10:delay.c       **** #define CPU_FREQUENCY 1000000
+  11:delay.c       **** // Define here the global static variables
+  12:delay.c       **** //
+  13:delay.c       **** int flag = 0;
+  14:delay.c       **** void delay(int);
+  15:delay.c       **** 
+  16:delay.c       **** // Interrupt handler example for INT0
+  17:delay.c       **** //
+  18:delay.c       **** 
+  19:delay.c       **** // It is recommended to use this coding style to
+  20:delay.c       **** // follow better the mixed C-assembly code in the
+  21:delay.c       **** // Program Memory window
+  22:delay.c       **** //
+  23:delay.c       **** 
+  24:delay.c       **** 
+  25:delay.c       **** // ***********************************************************
+  26:delay.c       **** // Main program
+  27:delay.c       **** //
+  28:delay.c       **** void delay(int x)
+  29:delay.c       ****  {
+  83               	call .
+  84               		in r28,__SP_L__
+  85               		in r29,__SP_H__
+  86 0000 DF93      	/* prologue: function */
+  87 0002 CF93      	/* frame size = 6 */
+  88 0004 00D0      		std Y+6,r25
+  89 0006 00D0      		std Y+5,r24
+  91 000a CDB7      	.LM1:
+  92 000c DEB7      		ldd r24,Y+5
+  93               		ldd r25,Y+6
+  94               		clr r26
+  95 000e 9E83      		sbrc r25,7
+  96 0010 8D83      		com r26
+  30:delay.c       ****    long int cycles = (x*CPU_FREQUENCY)/65535;
+  97               	 Y+6,r25
+  98               		std Y+5,r24
+ 100 0014 9E81      	.LM1:
+ 101 0016 AA27      		ldd r24,Y+5
+ 102 0018 97FD      		ldd r25,Y+6
+ 103 001a A095      		clr r26
+ 104 001c BA2F      		sbrc r25,7
+ 105 001e 20E4      		com r26
+ 106 0020 32E4      		mov r27,r26
+ 107 0022 4FE0      		ldi r18,lo8(1000000)
+ 108 0024 50E0      		ldi r19,hi8(1000000)
+ 109 0026 BC01      		ldi r20,hlo8(1000000)
+ 110 0028 CD01      		ldi r21,hhi8(1000000)
+ 111 002a 00D0      		movw r22,r24
+ 112 002c DC01      		movw r24,r26
+ 113 002e CB01      		rcall __mulsi3
+ 114 0030 2FEF      		movw r26,r24
+ 115 0032 3FEF      		movw r24,r22
+ 116 0034 40E0      		ldi r18,lo8(65535)
+ 117 0036 50E0      		ldi r19,hi8(65535)
+ 118 0038 BC01      		ldi r20,hlo8(65535)
+ 119 003a CD01      		ldi r21,hhi8(65535)
+ 120 003c 00D0      		movw r22,r24
+ 121 003e DA01      		movw r24,r26
+ 122 0040 C901      		rcall __divmodsi4
+ 123 0042 8983      		movw r26,r20
+ 124 0044 9A83      		movw r24,r18
+ 125 0046 AB83      		std Y+1,r24
+ 126 0048 BC83      		std Y+2,r25
+  31:delay.c       **** 	TCNT1 = 65535 - cycles;
+ 127               	r24
+ 128               		movw r24,r26
+ 129 004a ECE4      		rcall __divmodsi4
+ 130 004c F0E0      		movw r26,r20
+ 131 004e 8981      		movw r24,r18
+ 132 0050 9A81      		std Y+1,r24
+ 133 0052 8095      		std Y+2,r25
+ 134 0054 9095      		std Y+3,r26
+ 135 0056 9183      		std Y+4,r27
+  32:delay.c       ****    TCCR1B |= (1<<CS10)|(1<<CS12);
+ 137               	r24,r18
+ 138               		std Y+1,r24
+ 139 005a AEE4      		std Y+2,r25
+ 140 005c B0E0      		std Y+3,r26
+ 141 005e EEE4      		std Y+4,r27
+ 143 0062 8081      	.LM2:
+ 144 0064 8560      		ldi r30,lo8(76)
+ 145 0066 8C93      		ldi r31,hi8(76)
+  33:delay.c       ****    while( TOV1 == 1);
+  34:delay.c       ****    TIFR |= (1<<TOV1);
+ 146               	r26
+ 147               		std Y+4,r27
+ 149 006a B0E0      	.LM2:
+ 150 006c E8E5      		ldi r30,lo8(76)
+ 151 006e F0E0      		ldi r31,hi8(76)
+ 152 0070 8081      		ldd r24,Y+1
+ 153 0072 8460      		ldd r25,Y+2
+ 154 0074 8C93      		com r24
+ 155               		com r25
+  35:delay.c       **** }
+ 156               	2:
+ 157               		ldi r30,lo8(76)
+ 158 0076 2696      		ldi r31,hi8(76)
+ 159 0078 0FB6      		ldd r24,Y+1
+ 160 007a F894      		ldd r25,Y+2
+ 161 007c DEBF      		com r24
+ 162 007e 0FBE      		com r25
+ 163 0080 CDBF      		std Z+1,r25
+ 164 0082 CF91      		st Z,r24
+ 166 0086 0895      	.LM3:
+ 167               		ldi r26,lo8(78)
+ 168               		ldi r27,hi8(78)
+ 169               		ldi r30,lo8(78)
+ 170               		ldi r31,hi8(78)
+ 171               		ld r24,Z
+ 172               		ori r24,lo8(5)
+ 173               		st X,r24
+ 175               	.LM4:
+  36:delay.c       **** int main(void)
+  37:delay.c       **** {
+ 176               	d r24,Z
+ 177               		ori r24,lo8(5)
+ 178               		st X,r24
+ 180 008a CF93      	.LM4:
+ 181 008c CDB7      		ldi r26,lo8(88)
+ 182 008e DEB7      		ldi r27,hi8(88)
+ 183               		ldi r30,lo8(88)
+ 184               		ldi r31,hi8(88)
+  38:delay.c       **** 	DDRB |= (1<<PB0);
+ 185               	 r26,lo8(88)
+ 186               		ldi r27,hi8(88)
+ 187 0090 A7E3      		ldi r30,lo8(88)
+ 188 0092 B0E0      		ldi r31,hi8(88)
+ 189 0094 E7E3      		ld r24,Z
+ 190 0096 F0E0      		ori r24,lo8(4)
+ 191 0098 8081      		st X,r24
+ 192 009a 8160      	/* epilogue start */
+ 194               	.LM5:
+  39:delay.c       **** 	while(1)
+  40:delay.c       **** 	{
+  41:delay.c       **** 		PORTB ^= (1<<PB0);
+ 195               	24
+ 196               	/* epilogue start */
+ 198 00a0 B0E0      	.LM5:
+ 199 00a2 E8E3      		adiw r28,6
+ 200 00a4 F0E0      		in __tmp_reg__,__SREG__
+ 201 00a6 9081      		cli
+ 202 00a8 81E0      		out __SP_H__,r29
+ 203 00aa 8927      		out __SREG__,__tmp_reg__
+ 204 00ac 8C93      		out __SP_L__,r28
+  42:delay.c       **** 		delay(2);
+ 205               	H__,r29
+ 206               		out __SREG__,__tmp_reg__
+ 207 00ae 82E0      		out __SP_L__,r28
+ 208 00b0 90E0      		pop r28
+ 209 00b2 00D0      		pop r29
+ 210 00b4 00C0      		ret
+ 215               	.Lscope1:
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+C:\users\batch2\Temp/cckVGqF9.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/cckVGqF9.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/cckVGqF9.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/cckVGqF9.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/cckVGqF9.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/cckVGqF9.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/cckVGqF9.s:75     .bss:00000000 flag
+C:\users\batch2\Temp/cckVGqF9.s:82     .text:00000000 delay
+C:\users\batch2\Temp/cckVGqF9.s:175    .text:00000088 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__mulsi3
+__divmodsi4

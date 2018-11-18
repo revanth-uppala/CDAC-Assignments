@@ -1,0 +1,40 @@
+; ************************************************************
+
+
+
+; PROJECT:
+; AUTHOR:
+; ************************************************************
+
+V1  PC0 VSS SLIDER_1(0 5) ;x: Panel sliders 1 - 3
+
+X1 TTY (4800 8) PD0 PD1
+
+C1 AREF VSS 1u
+; Micro + software running
+; ------------------------------------------------------------
+.MICRO "ATmega8"
+.TOOLCHAIN "GCC"
+.GCCPATH   "C:\WinAVR"
+.GCCMAKE   AUTO
+.TARGET    "adc.hex"
+.SOURCE    "adc.c"
+
+.TRACE              ; Activate micro trace
+
+; Following lines are optional; if not included
+; exactly these values are taken by default
+; ------------------------------------------------------------
+.POWER VDD=5 VSS=0  ; Power nodes
+.CLOCK 1meg         ; Micro clock
+.STORE 250m         ; Trace (micro+signals) storage time
+
+; Micro nodes: RESET, AREF, PB0-PB7, PC0-PC6, PD0-PD7, ACO, TIM1OVF, ADC6, ADC7
+; Define here the hardware around the micro
+; ------------------------------------------------------------
+
+
+
+
+
+

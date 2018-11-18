@@ -1,0 +1,40 @@
+; ************************************************************
+; PROJECT:
+; AUTHOR:
+; ************************************************************
+X1 EXTOUT PB4 ; 'node' driven by EXTOUT in partner process with same <inst_name>
+X2 EXTIN(0) PB5; 'node' will drive EXTIN in partner process with same <inst_name>
+
+X3  EXTIN(0) PB3; 'node' will drive EXTIN in partner process with same <inst_name>
+D1 VDD PD0 ; x: Panel LEDs 1 - 8
+D2 VDD PD1
+D3 VDD PD2
+D4 VDD PD3
+D5 VDD PD4
+D6 VDD PD5
+D7 VDD PD6
+D8 VDD PD7
+
+; Micro + software running
+; ------------------------------------------------------------
+.MICRO "ATmega8"
+.TOOLCHAIN "GCC"
+.GCCPATH   "C:\WinAVR"
+.GCCMAKE   AUTO
+.TARGET    "spi_slave.hex"
+.SOURCE    "spi_sla.c"
+
+.TRACE              ; Activate micro trace
+
+; Following lines are optional; if not included
+; exactly these values are taken by default
+; ------------------------------------------------------------
+.POWER VDD=5 VSS=0  ; Power nodes
+.CLOCK 1meg         ; Micro clock
+.STORE 250m         ; Trace (micro+signals) storage time
+
+; Micro nodes: RESET, AREF, PB0-PB7, PC0-PC6, PD0-PD7, ACO, TIM1OVF, ADC6, ADC7
+; Define here the hardware around the micro
+; ------------------------------------------------------------
+
+

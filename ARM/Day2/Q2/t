@@ -1,0 +1,71 @@
+ARM GAS  boot.s 			page 1
+
+
+   1              	
+   2              	;/* file  @ boot.s  */
+   3              	
+   4              	
+   5              	.code 32
+   6              	.text
+   7              	
+   8              	.global _start
+   9              	.global __start
+  10              	
+  11              	.extern initilize_stack
+  12              	
+  13              	;/* Entry Point of the programe  */
+  14              	_start:
+  15              	__start:
+  16              	
+  17              	
+  18              	;/* Start of the vector table */
+  19              	
+  20 0000 060000EA 	b       RESET_HANDLER
+  21 0004 070000EA 	b       UNDEF_HANDLER
+  22 0008 080000EA 	b       SWI_HANDLER
+  23 000c 0D0000EA 	b       PREFETCH_ABORT_HANDLER
+  24 0010 0E0000EA 	b       DATA_ABORT_HANDLER
+  25 0014 0F0000EA 	b       RESERVED_HANDLER
+  26 0018 0F0000EA 	b       IRQ_HANDLER
+  27 001c 04F05EE2 	        FIQ_HANDLER:subs pc,r14,#4
+  28              	
+  29              	
+  30              	;/* Exceptions handlers */
+  31              	
+  32 0020 FEFFFFEA 	RESET_HANDLER           :       b initilize_stack  
+  33              	
+  34 0024 0EF0B0E1 	UNDEF_HANDLER           :       movs pc,r14
+  35              	
+  36 0028 FF5F2DE9 	SWI_HANDLER             :	stmfd sp!,{r0-r12,lr}
+  37 002c 04001EE5 					ldr r0,[lr,#-4]
+  38 0030 FF04C0E3 					bic r0,r0,#0xff000000
+  39              					;adds r0,r0,#4
+  40 0034 FF9FBDE8 					ldmfd sp!,{r0-r12,pc}
+  41 0038 0EF0B0E1 					movs pc,r14 
+  42              	
+  43 003c 04F05EE2 	PREFETCH_ABORT_HANDLER  :       subs pc,r14,#4
+  44              	
+  45 0040 08F05EE2 	DATA_ABORT_HANDLER      :       subs pc,r14,#8
+  46              	
+  47              	RESERVED_HANDLER        :
+  48              	
+  49 0044 04F05EE2 	IRQ_HANDLER             :       subs pc,r14,#4
+  50              	
+  51              	.end 
+ARM GAS  boot.s 			page 2
+
+
+DEFINED SYMBOLS
+              boot.s:14     .text:00000000 _start
+              boot.s:15     .text:00000000 __start
+              boot.s:32     .text:00000020 RESET_HANDLER
+              boot.s:34     .text:00000024 UNDEF_HANDLER
+              boot.s:36     .text:00000028 SWI_HANDLER
+              boot.s:43     .text:0000003c PREFETCH_ABORT_HANDLER
+              boot.s:45     .text:00000040 DATA_ABORT_HANDLER
+              boot.s:47     .text:00000044 RESERVED_HANDLER
+              boot.s:49     .text:00000044 IRQ_HANDLER
+              boot.s:27     .text:0000001c FIQ_HANDLER
+
+UNDEFINED SYMBOLS
+initilize_stack

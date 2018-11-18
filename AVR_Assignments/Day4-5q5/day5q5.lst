@@ -1,0 +1,223 @@
+   1               		.file	"day5q5.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	__vector_7
+  73               	__vector_7:
+   1:day5q5.c      **** // ***********************************************************
+   2:day5q5.c      **** /* Project:   Write a code to generate square wave at the output of pin OC1A of frequency f1 and
+   3:day5q5.c      **** exactly f1/2 at OC1B */
+   4:day5q5.c      **** // Author:
+   5:day5q5.c      **** // Module description:
+   6:day5q5.c      **** // ***********************************************************
+   7:day5q5.c      **** 
+   8:day5q5.c      **** #include <avr\io.h>              // Most basic include files
+   9:day5q5.c      **** #include <avr\interrupt.h>       // Add the necessary ones
+  10:day5q5.c      **** #include <avr\signal.h>          // here
+  11:day5q5.c      **** 
+  12:day5q5.c      **** // Define here the global static variables
+  13:day5q5.c      **** //
+  14:day5q5.c      **** 
+  15:day5q5.c      **** 
+  16:day5q5.c      **** // Interrupt handler example for INT0
+  17:day5q5.c      **** //
+  18:day5q5.c      **** 
+  19:day5q5.c      **** 
+  20:day5q5.c      **** ISR(TIMER1_COMPB_vect )
+  21:day5q5.c      **** {
+  74               	 r0,__SREG__
+  75               		push r0
+  76               		clr __zero_reg__
+  77 0000 1F92      		push r18
+  78 0002 0F92      		push r24
+  79 0004 0FB6      		push r25
+  80 0006 0F92      		push r30
+  81 0008 1124      		push r31
+  82 000a 2F93      		push r29
+  83 000c 8F93      		push r28
+  84 000e 9F93      		in r28,__SP_L__
+  85 0010 EF93      		in r29,__SP_H__
+  86 0012 FF93      	/* prologue: Signal */
+  87 0014 DF93      	/* frame size = 0 */
+  89 0018 CDB7      	.LM1:
+  90 001a DEB7      		ldi r30,lo8(72)
+  91               		ldi r31,hi8(72)
+  92               		ld r24,Z
+  22:day5q5.c      **** 		if(OCR1B == 31250)
+  93               	r29,__SP_H__
+  94               	/* prologue: Signal */
+  95 001c E8E4      	/* frame size = 0 */
+  97 0020 8081      	.LM1:
+  98 0022 9181      		ldi r30,lo8(72)
+  99 0024 2AE7      		ldi r31,hi8(72)
+ 100 0026 8231      		ld r24,Z
+ 101 0028 9207      		ldd r25,Z+1
+ 102 002a 01F4      		ldi r18,hi8(31250)
+  23:day5q5.c      **** 		{
+  24:day5q5.c      **** 			OCR1B= 15625;
+ 103               	
+ 104               	/* frame size = 0 */
+ 106 002e F0E0      	.LM1:
+ 107 0030 89E0      		ldi r30,lo8(72)
+ 108 0032 9DE3      		ldi r31,hi8(72)
+ 109 0034 9183      		ld r24,Z
+ 110 0036 8083      		ldd r25,Z+1
+ 111 0038 00C0      		ldi r18,hi8(31250)
+ 112               		cpi r24,lo8(31250)
+  25:day5q5.c      **** 		}
+  26:day5q5.c      **** 		else
+  27:day5q5.c      **** 		{
+  28:day5q5.c      **** 			OCR1B = 31250;
+ 113               	
+ 115 003a E8E4      	.LM1:
+ 116 003c F0E0      		ldi r30,lo8(72)
+ 117 003e 82E1      		ldi r31,hi8(72)
+ 118 0040 9AE7      		ld r24,Z
+ 119 0042 9183      		ldd r25,Z+1
+ 120 0044 8083      		ldi r18,hi8(31250)
+ 121               		cpi r24,lo8(31250)
+ 122               		cpc r25,r18
+  29:day5q5.c      **** 		}
+  30:day5q5.c      **** 
+  31:day5q5.c      **** }
+ 123               	22,.LM1-.LFBB1
+ 124               	.LM1:
+ 125 0046 CF91      		ldi r30,lo8(72)
+ 126 0048 DF91      		ldi r31,hi8(72)
+ 127 004a FF91      		ld r24,Z
+ 128 004c EF91      		ldd r25,Z+1
+ 129 004e 9F91      		ldi r18,hi8(31250)
+ 130 0050 8F91      		cpi r24,lo8(31250)
+ 131 0052 2F91      		cpc r25,r18
+ 132 0054 0F90      		brne .L2
+ 134 0058 0F90      	.LM2:
+ 135 005a 1F90      		ldi r30,lo8(72)
+ 136 005c 1895      		ldi r31,hi8(72)
+ 137               		ldi r24,lo8(15625)
+ 138               		ldi r25,hi8(15625)
+ 139               		std Z+1,r25
+ 140               		st Z,r24
+ 141               		rjmp .L4
+ 142               	.L2:
+  32:day5q5.c      **** 
+  33:day5q5.c      **** 
+  34:day5q5.c      **** 
+  35:day5q5.c      **** 
+  36:day5q5.c      **** // ***********************************************************
+  37:day5q5.c      **** // Main program
+  38:day5q5.c      **** //
+  39:day5q5.c      **** int main(void) {
+ 143               	1
+ 144               	.LM2:
+ 145               		ldi r30,lo8(72)
+ 146 005e DF93      		ldi r31,hi8(72)
+ 147 0060 CF93      		ldi r24,lo8(15625)
+ 148 0062 CDB7      		ldi r25,hi8(15625)
+ 149 0064 DEB7      		std Z+1,r25
+ 150               		st Z,r24
+ 151               		rjmp .L4
+  40:day5q5.c      ****    DDRB |= (1<<PB1)|(1<<PB2);
+ 152               	-.LFBB1
+ 153               	.LM2:
+ 154 0066 A7E3      		ldi r30,lo8(72)
+ 155 0068 B0E0      		ldi r31,hi8(72)
+ 156 006a E7E3      		ldi r24,lo8(15625)
+ 157 006c F0E0      		ldi r25,hi8(15625)
+ 158 006e 8081      		std Z+1,r25
+ 159 0070 8660      		st Z,r24
+ 160 0072 8C93      		rjmp .L4
+  41:day5q5.c      **** 	TCNT1 = 0;
+ 161               	-.LFBB1
+ 162               	.LM2:
+ 163 0074 ECE4      		ldi r30,lo8(72)
+ 164 0076 F0E0      		ldi r31,hi8(72)
+ 165 0078 1182      		ldi r24,lo8(15625)
+ 166 007a 1082      		ldi r25,hi8(15625)
+  42:day5q5.c      ****    OCR1A =  31250;    //1s
+ 167               	5,r18
+ 168               		brne .L2
+ 170 007e F0E0      	.LM2:
+ 171 0080 82E1      		ldi r30,lo8(72)
+ 172 0082 9AE7      		ldi r31,hi8(72)
+ 173 0084 9183      		ldi r24,lo8(15625)
+ 174 0086 8083      		ldi r25,hi8(15625)
+  43:day5q5.c      ****   OCR1B = 15625; //2s
+ 175               	5,r18
+ 176               		brne .L2
+ 178 008a F0E0      	.LM2:
+ 179 008c 89E0      		ldi r30,lo8(72)
+ 180 008e 9DE3      		ldi r31,hi8(72)
+ 181 0090 9183      		ldi r24,lo8(15625)
+ 182 0092 8083      		ldi r25,hi8(15625)
+  44:day5q5.c      ****    TIMSK |= (1<<OCIE1B);
+ 183               	5,r18
+ 184               		brne .L2
+ 186 0096 B0E0      	.LM2:
+ 187 0098 E9E5      		ldi r30,lo8(72)
+ 188 009a F0E0      		ldi r31,hi8(72)
+ 189 009c 8081      		ldi r24,lo8(15625)
+ 190 009e 8860      		ldi r25,hi8(15625)
+ 191 00a0 8C93      		std Z+1,r25
+  45:day5q5.c      ****    TCCR1A = (1<< COM1A0)|(1<<COM1B0);
+ 192               	2
+ 194 00a2 EFE4      	.LM2:
+ 195 00a4 F0E0      		ldi r30,lo8(72)
+ 196 00a6 80E5      		ldi r31,hi8(72)
+ 197 00a8 8083      		ldi r24,lo8(15625)
+  46:day5q5.c      **** 	TCCR1B = (1<<CS11)|(1<<CS10)|(1<<WGM12);
+ 198               	24,lo8(31250)
+ 199               		cpc r25,r18
+ 200 00aa EEE4      		brne .L2
+ 202 00ae 8BE0      	.LM2:
+ 203 00b0 8083      		ldi r30,lo8(72)
+  47:day5q5.c      **** 	MCUCR |= (1<<SE);
+ 204               		ldd r25,Z+1
+ 205               		ldi r18,hi8(31250)
+ 206 00b2 A5E5      		cpi r24,lo8(31250)
+ 207 00b4 B0E0      		cpc r25,r18
+ 208 00b6 E5E5      		brne .L2
+ 210 00ba 8081      	.LM2:
+ 211 00bc 8068      		ldi r30,lo8(72)
+ 212 00be 8C93      		ldi r31,hi8(72)
+  48:day5q5.c      **** 	sei();
+ 213               	r18,hi8(31250)
+ 214               		cpi r24,lo8(31250)
+ 215               		cpc r25,r18
+ 216               		brne .L2
+ 218               	.LM2:
+ 219               		ldi r30,lo8(72)
+ 220               		ldi r31,hi8(72)
+  49:day5q5.c      ****    while(1) {             // Infinite loop; define here the
+  50:day5q5.c      ****            asm("SLEEP"); // system behaviour
+ 221               	r18,hi8(31250)
+ 222               		cpi r24,lo8(31250)
+ 223               		cpc r25,r18
+ 224               		brne .L2
+ 226               	.LM2:
+ 227               		ldi r30,lo8(72)
+ 228 00c4 00C0      		ldi r31,hi8(72)
+ 229               		ldi r24,lo8(15625)
+ 230               		ldi r25,hi8(15625)
+ 231               		std Z+1,r25
+ 232               		st Z,r24
+DEFINED SYMBOLS
+                            *ABS*:00000000 day5q5.c
+C:\users\batch2\Temp/ccqmgfnp.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccqmgfnp.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccqmgfnp.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccqmgfnp.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccqmgfnp.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccqmgfnp.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccqmgfnp.s:73     .text:00000000 __vector_7
+C:\users\batch2\Temp/ccqmgfnp.s:142    .text:0000005e main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

@@ -1,0 +1,15 @@
+Creating   'day4q1.eep'
+Creating   'day4q1.hex'
+Creating   'day4q1.obj'
+Creating   'day4q1.lis'
+Creating   'day4q1.map'
+
+Assembling 'day4q1.asm'
+Including  'C:\VMLAB\include\m8def.inc'
+day4q1.asm(35) : day4q1.asm(37) : day4q1.asm(38) : day4q1.asm(44) : 
+Assembly complete with 4 errors
+
+Deleting   'day4q1.eep'
+Deleting   'day4q1.obj'
+Deleting   'day4q1.hex'
+Deleting   'day4q1.map'

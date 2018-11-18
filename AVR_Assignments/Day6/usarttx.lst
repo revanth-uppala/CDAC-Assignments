@@ -1,0 +1,268 @@
+   1               		.file	"usarttx.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  70               	.global	flag
+  71               	.global	flag
+  72               		.section .bss
+  75               	flag:
+  76 0000 0000      		.skip 2,0
+  77               		.text
+  79               	.global	init
+  81               	init:
+   1:usarttx.c     **** // ***********************************************************
+   2:usarttx.c     **** /*Project:     1. Write a assembly code to receive data from UART & transmit it back by adding one 
+   3:usarttx.c     **** a. Baud Rate = 9600
+   4:usarttx.c     **** b. 8 bit data
+   5:usarttx.c     **** c. Single Stop Bit
+   6:usarttx.c     **** */
+   7:usarttx.c     **** // Author:
+   8:usarttx.c     **** // Module description:
+   9:usarttx.c     **** // ***********************************************************
+  10:usarttx.c     **** 
+  11:usarttx.c     **** #include <avr\io.h>              // Most basic include files
+  12:usarttx.c     **** #include <avr\interrupt.h>       // Add the necessary ones
+  13:usarttx.c     **** #include <avr\signal.h>          // here
+  14:usarttx.c     **** #define BAUD 4800
+  15:usarttx.c     **** #define F_CPU 1000000
+  16:usarttx.c     **** #include <util/setbaud.h>
+  17:usarttx.c     **** // Define here the global static variables
+  18:usarttx.c     **** //
+  19:usarttx.c     **** int flag = 0;
+  20:usarttx.c     **** #define BV(X) ( 1<<X)
+  21:usarttx.c     **** #define BC(X) (0<<X )
+  22:usarttx.c     **** void TX(unsigned char) ;
+  23:usarttx.c     **** //void delay_init(void);
+  24:usarttx.c     **** /*ISR(TIMER2_COMP_vect)
+  25:usarttx.c     **** {
+  26:usarttx.c     ****     flag = 1;
+  27:usarttx.c     **** }
+  28:usarttx.c     **** 
+  29:usarttx.c     **** 
+  30:usarttx.c     **** 
+  31:usarttx.c     **** 
+  32:usarttx.c     **** void delay_init(void)
+  33:usarttx.c     **** {
+  34:usarttx.c     **** 
+  35:usarttx.c     **** 	
+  36:usarttx.c     ****  TCNT2 = 0;
+  37:usarttx.c     ****  OCR2 = 61;
+  38:usarttx.c     ****  TIMSK  = TIMSK |  (1<<OCIE2);
+  39:usarttx.c     ****  TCCR2  = TCCR2 | (1<< CS21)| (1 << WGM21);
+  40:usarttx.c     **** 
+  41:usarttx.c     **** } */
+  42:usarttx.c     **** 
+  43:usarttx.c     **** // It is recommended to use this coding style to
+  44:usarttx.c     **** // follow better the mixed C-assembly code in the
+  45:usarttx.c     **** // Program Memory window
+  46:usarttx.c     **** //
+  47:usarttx.c     **** void init(void)
+  48:usarttx.c     **** {
+  82               	n r29,__SP_H__
+  83               	/* prologue: function */
+  84               	/* frame size = 0 */
+  86 0002 CF93      	.LM1:
+  87 0004 CDB7      		ldi r30,lo8(64)
+  88 0006 DEB7      		ldi r31,hi8(64)
+  89               		st Z,__zero_reg__
+  49:usarttx.c     **** 
+  50:usarttx.c     ****    UBRRH = UBRRH_VALUE;
+  91               	in r28,__SP_L__
+  92               		in r29,__SP_H__
+  93 0008 E0E4      	/* prologue: function */
+  94 000a F0E0      	/* frame size = 0 */
+  51:usarttx.c     ****    UBRRL = UBRRL_VALUE;
+  97               	init:
+  99 0010 F0E0      	.LM0:
+ 100 0012 8CE0      	.LFBB1:
+ 101 0014 8083      		push r29
+  52:usarttx.c     **** 	UCSRB = BV(TXEN) ;
+ 102               	
+ 103               		.section .bss
+ 106 001a 88E0      	flag:
+ 107 001c 8083      		.skip 2,0
+  53:usarttx.c     **** 	UCSRC =  BV(URSEL) | BV(UCSZ0) | BV(UCSZ1);
+ 108               	,0,0,0
+ 112 0022 86E8      	.global	flag
+ 113 0024 8083      	.global	flag
+ 114               		.section .bss
+  54:usarttx.c     **** 		
+  55:usarttx.c     **** }
+ 115               	tabs	"c:/winavr/lib/gcc/../../avr/include/avr/fuse.h",130,0,0,0
+ 119 002a 0895      	.global	flag
+ 120               	.global	flag
+ 121               		.section .bss
+ 124               	flag:
+ 125               		.skip 2,0
+ 126               		.text
+  56:usarttx.c     **** void TX(unsigned char x)
+  57:usarttx.c     **** {
+ 130 002c DF93      	.global	flag
+ 131 002e CF93      	.global	flag
+ 132 0030 0F92      		.section .bss
+ 135               	flag:
+ 136               		.skip 2,0
+ 137 0036 8983      		.text
+  58:usarttx.c     ****    while ( !( UCSRA & (1<<UDRE)) );
+ 139               	(0,11),0,8;high:(0,11),8,8;;",128,0,0,0
+ 142 003a F0E0      	.global	flag
+ 143 003c 8081      	.global	flag
+ 144 003e 882F      		.section .bss
+ 147 0044 9070      	flag:
+ 148 0046 0097      		.skip 2,0
+ 149 0048 01F0      		.text
+  59:usarttx.c     **** 	UDR = x;
+ 153 004c F0E0      	.global	flag
+ 154 004e 8981      	.global	flag
+ 155 0050 8083      		.section .bss
+  60:usarttx.c     **** 		
+  61:usarttx.c     **** }
+ 157               	c/../../avr/include/avr/fuse.h",130,0,0,0
+ 161 0056 DF91      	.global	flag
+ 162 0058 0895      	.global	flag
+ 163               		.section .bss
+ 166               	flag:
+ 167 0000 4865 6C6C 		.skip 2,0
+ 167      6F20 4344 
+ 167      4143 2100 
+ 168 000c 0000 0000 		.text
+ 168      0000 0000 
+ 170               	.global	init
+ 172               	init:
+  62:usarttx.c     **** 
+  63:usarttx.c     **** // ***********************************************************
+  64:usarttx.c     **** // Main program
+  65:usarttx.c     **** //
+  66:usarttx.c     **** int main(void) {
+ 174               	0
+ 175               	.global	flag
+ 176               	.global	flag
+ 177 005a DF93      		.section .bss
+ 180 0060 DEB7      	flag:
+ 181 0062 6B97      		.skip 2,0
+ 182 0064 0FB6      		.text
+ 184 0068 DEBF      	.global	init
+ 186 006c CDBF      	init:
+ 188               	.LM0:
+  67:usarttx.c     **** 		 init();
+ 189               	al	flag
+ 190               	.global	flag
+ 191 006e 00D0      		.section .bss
+  68:usarttx.c     **** 	  unsigned  char str[20]  = "Hello CDAC!";
+ 192               	tabs	"c:/winavr/lib/gcc/../../avr/include/avr/fuse.h",130,0,0,0
+ 196 0074 988F      	.global	flag
+ 197 0076 8F8B      	.global	flag
+ 198 0078 A0E0      		.section .bss
+ 201 007e A98F      	flag:
+ 202 0080 BCE0      		.skip 2,0
+ 203 0082 BB8F      		.text
+ 205 0084 E98D      	.global	init
+ 207 0088 0080      	init:
+ 209 008c 9A8D      	.LM0:
+ 210 008e 0196      	.LFBB1:
+ 211 0090 9A8F      		push r29
+ 212 0092 898F      		push r28
+ 213 0094 AF89      		in r28,__SP_L__
+ 214 0096 B88D      		in r29,__SP_H__
+ 215 0098 0C92      	/* prologue: function */
+ 216 009a EF89      	/* frame size = 0 */
+ 218 009e 3196      	.LM1:
+ 219 00a0 F88F      		ldi r30,lo8(64)
+ 220 00a2 EF8B      		ldi r31,hi8(64)
+ 221 00a4 FB8D      		st Z,__zero_reg__
+ 223 00a8 FB8F      	.LM2:
+ 224 00aa 8B8D      		ldi r30,lo8(41)
+ 225 00ac 8823      		ldi r31,hi8(41)
+ 226 00ae 01F4      		ldi r24,lo8(12)
+ 227 00b0 88E0      		st Z,r24
+ 229 00b4 3F96      	.LM3:
+ 230 00b6 DF01      		ldi r30,lo8(42)
+ 231 00b8 982F      		ldi r31,hi8(42)
+ 232 00ba 1D92      		ldi r24,lo8(8)
+ 233 00bc 9A95      		st Z,r24
+  69:usarttx.c     ****    	 int i= 0;
+ 235               	ldi r30,lo8(41)
+ 236               		ldi r31,hi8(41)
+ 237 00c0 1A82      		ldi r24,lo8(12)
+ 238 00c2 1982      		st Z,r24
+  70:usarttx.c     **** //	delay_init();
+  71:usarttx.c     **** //	sei();
+  72:usarttx.c     **** 	while(1)
+  73:usarttx.c     ****     {
+  74:usarttx.c     ****    	
+  75:usarttx.c     **** //   	if(flag == 1)
+  76:usarttx.c     ****   // 	{
+  77:usarttx.c     ****    //		flag = 0;
+  78:usarttx.c     ****    		if(str[i] != '\0')
+ 240               	LFBB1
+ 241               	.LM1:
+ 242 00c4 2981      		ldi r30,lo8(64)
+ 243 00c6 3A81      		ldi r31,hi8(64)
+ 244 00c8 CE01      		st Z,__zero_reg__
+ 246 00cc FC01      	.LM2:
+ 247 00ce E20F      		ldi r30,lo8(41)
+ 248 00d0 F31F      		ldi r31,hi8(41)
+ 249 00d2 8081      		ldi r24,lo8(12)
+ 250 00d4 8823      		st Z,r24
+  79:usarttx.c     ****    		{
+  80:usarttx.c     ****    			TX(str[i++]);
+ 252               	LFBB1
+ 253               	.LM1:
+ 254 00d8 2981      		ldi r30,lo8(64)
+ 255 00da 3A81      		ldi r31,hi8(64)
+ 256 00dc CE01      		st Z,__zero_reg__
+ 258 00e0 FC01      	.LM2:
+ 259 00e2 E20F      		ldi r30,lo8(41)
+ 260 00e4 F31F      		ldi r31,hi8(41)
+ 261 00e6 2081      		ldi r24,lo8(12)
+ 262 00e8 8981      		st Z,r24
+ 264 00ec 0196      	.LM3:
+ 265 00ee 9A83      		ldi r30,lo8(42)
+ 266 00f0 8983      		ldi r31,hi8(42)
+ 267 00f2 822F      		ldi r24,lo8(8)
+ 268 00f4 00D0      		st Z,r24
+  81:usarttx.c     ****    		}
+  82:usarttx.c     ****    		if(i >10)
+ 270               	ldi r30,lo8(41)
+ 271               		ldi r31,hi8(41)
+ 272 00f6 8981      		ldi r24,lo8(12)
+ 273 00f8 9A81      		st Z,r24
+ 275 00fc 9105      	.LM3:
+ 276 00fe 04F0      		ldi r30,lo8(42)
+  83:usarttx.c     ****    		{
+  84:usarttx.c     ****    			i = 0;
+ 277               	64)
+ 278               		ldi r31,hi8(64)
+ 279 0100 1A82      		st Z,__zero_reg__
+ 281 0104 00C0      	.LM2:
+ 282               		ldi r30,lo8(41)
+ 283               		ldi r31,hi8(41)
+ 284               		ldi r24,lo8(12)
+ 285               		st Z,r24
+ 287               	.LM3:
+ 288               		ldi r30,lo8(42)
+ 289               		ldi r31,hi8(42)
+ 290               		ldi r24,lo8(8)
+DEFINED SYMBOLS
+                            *ABS*:00000000 usarttx.c
+C:\users\batch2\Temp/cc0YCiS1.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/cc0YCiS1.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/cc0YCiS1.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/cc0YCiS1.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/cc0YCiS1.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/cc0YCiS1.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/cc0YCiS1.s:75     .bss:00000000 flag
+C:\users\batch2\Temp/cc0YCiS1.s:81     .text:00000000 init
+C:\users\batch2\Temp/cc0YCiS1.s:126    .text:0000002c TX
+C:\users\batch2\Temp/cc0YCiS1.s:173    .text:0000005a main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

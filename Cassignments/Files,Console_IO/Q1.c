@@ -1,0 +1,8 @@
+/*Experiment to find out what happens when printf argument string contains \x, where x is some
+character (a, b, c, \, ^ etc). What are your observations*/
+#include<stdio.h>
+int main()
+{
+	printf("word1\aword2\bword3\fword4\nword5\rword6\tword7\vword8 \\\n");
+	return 0;
+}

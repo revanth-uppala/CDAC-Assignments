@@ -1,0 +1,68 @@
+   1               		.file	"usartrx.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  71               	.global	main
+  73               	main:
+   1:usartrx.c     **** // ***********************************************************
+   2:usartrx.c     **** // Project:
+   3:usartrx.c     **** // Author:
+   4:usartrx.c     **** // Module description:
+   5:usartrx.c     **** // ***********************************************************
+   6:usartrx.c     **** 
+   7:usartrx.c     **** #include <avr\io.h>              // Most basic include files
+   8:usartrx.c     **** #include <avr\interrupt.h>       // Add the necessary ones
+   9:usartrx.c     **** #include <avr\signal.h>          // here
+  10:usartrx.c     **** 
+  11:usartrx.c     **** // Define here the global static variables
+  12:usartrx.c     **** //
+  13:usartrx.c     **** int My_global;
+  14:usartrx.c     **** 
+  15:usartrx.c     **** // Interrupt handler example for INT0
+  16:usartrx.c     **** //
+  17:usartrx.c     **** 
+  18:usartrx.c     **** // It is recommended to use this coding style to
+  19:usartrx.c     **** // follow better the mixed C-assembly code in the
+  20:usartrx.c     **** // Program Memory window
+  21:usartrx.c     **** //
+  22:usartrx.c     **** 
+  23:usartrx.c     **** 
+  24:usartrx.c     **** // ***********************************************************
+  25:usartrx.c     **** // Main program
+  26:usartrx.c     **** //
+  27:usartrx.c     **** int main(void) {
+  74               	 @function
+  75               	main:
+  77 0000 DF93      	.LM0:
+  78 0002 CF93      	.LFBB1:
+  79 0004 CDB7      		push r29
+  80 0006 DEB7      		push r28
+  81               		in r28,__SP_L__
+  82               		in r29,__SP_H__
+  83               	/* prologue: function */
+  84 0008 00C0      	/* frame size = 0 */
+  85               	.L2:
+  86               		rjmp .L2
+  88               	.Lscope1:
+  89               		.comm My_global,2,1
+DEFINED SYMBOLS
+                            *ABS*:00000000 usartrx.c
+C:\users\batch2\Temp/cccEhCaC.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/cccEhCaC.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/cccEhCaC.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/cccEhCaC.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/cccEhCaC.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/cccEhCaC.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/cccEhCaC.s:73     .text:00000000 main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

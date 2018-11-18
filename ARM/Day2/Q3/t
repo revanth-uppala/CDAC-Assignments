@@ -1,0 +1,53 @@
+ARM GAS  app.s 			page 1
+
+
+   1              	
+   2              	;/* PROGRAM TO ------------------ */
+   3              	
+   4              	
+   5              		;ARM CODE
+   6              		.code 32                ;word align
+   7              		.text
+   8              		.global main_asm
+   9              	
+  10              		/* Application code for assembly starts here */
+  11              	
+  12              		main_asm:
+  13              	
+  14 0000 24009FE5 		        ldr r0,=thumb + 1         ; +1 to enter Thumb state
+  15 0004 0FE0A0E1 		        mov lr,pc               ; set the return address
+  16 0008 10FF2FE1 		        bx r0                   ; branch to Thumb code
+  17              		
+  18 000c 03B0A0E3 		        MOV r11,#0x03
+  19 0010 07C0A0E3 		        MOV r12,#0x07
+  20 0014 0CA08BE0 		        add r10,r11,r12
+  21 0018 040000EA 		loop:   b loop
+  22              		
+  23              		
+  24              		;/* The Thumb code starts here */
+  25              		;THUMB CODE
+  26              		.code 16                ;half word align
+  27              	
+  28              		thumb:  ;MOV r1,#0x05
+  29 001c 0A22     		        MOV r2,#0x0a
+  30 001e 8818     		        add r0,r1,r2    ;perform addition of r1 and r2 ,store the result in r0
+  31 0020 6120     			ldr r0,= 'a'
+  32 0022 00DF     			swi 0x00
+  33              			
+  34              				        
+  35 0024 FF21     			MOV r1,#0xff
+  36 0026 AA22     		        MOV r2,#0xaa
+  37              	
+  38 0028 7047     		        bx lr           ;return to ARM code and state
+  39              	
+  40 002a 00001D00 		.end
+  40      0000
+ARM GAS  app.s 			page 2
+
+
+DEFINED SYMBOLS
+               app.s:12     .text:00000000 main_asm
+               app.s:28     .text:0000001c thumb
+               app.s:21     .text:00000018 loop
+
+NO UNDEFINED SYMBOLS

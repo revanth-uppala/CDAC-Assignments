@@ -1,0 +1,233 @@
+   1               		.file	"day6q1.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  70               	.global	flag
+  71               	.global	flag
+  72               		.section .bss
+  75               	flag:
+  76 0000 0000      		.skip 2,0
+  77               		.text
+  79               	.global	__vector_11
+  81               	__vector_11:
+   1:day6q1.c      **** // ***********************************************************
+   2:day6q1.c      **** /*Project:     1. Write a assembly code to receive data from UART & transmit it back by adding one 
+   3:day6q1.c      **** a. Baud Rate = 9600
+   4:day6q1.c      **** b. 8 bit data
+   5:day6q1.c      **** c. Single Stop Bit
+   6:day6q1.c      **** */
+   7:day6q1.c      **** // Author: Souvik
+   8:day6q1.c      **** // Module description:
+   9:day6q1.c      **** // ***********************************************************
+  10:day6q1.c      **** 
+  11:day6q1.c      **** #include <avr\io.h>              // Most basic include files
+  12:day6q1.c      **** #include <avr\interrupt.h>       // Add the necessary ones
+  13:day6q1.c      **** #include <avr\signal.h>          // here
+  14:day6q1.c      **** #define BAUD 4800
+  15:day6q1.c      **** #define F_CPU 1000000
+  16:day6q1.c      **** #include <util/setbaud.h>
+  17:day6q1.c      **** // Define here the global static variables
+  18:day6q1.c      **** //
+  19:day6q1.c      **** 
+  20:day6q1.c      **** #define BV(X)  (1<<X)
+  21:day6q1.c      **** #define BC(X)  (0<<X)
+  22:day6q1.c      **** void TX(int);
+  23:day6q1.c      **** int flag= 0;
+  24:day6q1.c      **** int x;
+  25:day6q1.c      **** 
+  26:day6q1.c      **** ISR(  USART_RXC_vect)
+  27:day6q1.c      **** {
+  82               	EG__
+  83               		push r0
+  84               		clr __zero_reg__
+  85 0000 1F92      		push r24
+  86 0002 0F92      		push r25
+  87 0004 0FB6      		push r30
+  88 0006 0F92      		push r31
+  89 0008 1124      		push r29
+  90 000a 8F93      		push r28
+  91 000c 9F93      		in r28,__SP_L__
+  92 000e EF93      		in r29,__SP_H__
+  93 0010 FF93      	/* prologue: Signal */
+  94 0012 DF93      	/* frame size = 0 */
+  96 0016 CDB7      	.LM1:
+  97 0018 DEB7      		ldi r30,lo8(44)
+  98               		ldi r31,hi8(44)
+  99               		ld r24,Z
+  28:day6q1.c      **** 	x = (unsigned char) UDR;
+ 100               	31
+ 101               		push r29
+ 102 001a ECE2      		push r28
+ 103 001c F0E0      		in r28,__SP_L__
+ 104 001e 8081      		in r29,__SP_H__
+ 105 0020 882F      	/* prologue: Signal */
+ 106 0022 90E0      	/* frame size = 0 */
+ 108 0028 8093 0000 	.LM1:
+  29:day6q1.c      **** 	flag = 1;
+ 109               	ero_reg__
+ 110               		push r24
+ 111 002c 81E0      		push r25
+ 112 002e 90E0      		push r30
+ 113 0030 9093 0000 		push r31
+ 114 0034 8093 0000 		push r29
+ 115               		push r28
+  30:day6q1.c      **** }
+ 116               	n
+ 117               	__vector_11:
+ 119 003a DF91      	.LM0:
+ 120 003c FF91      	.LFBB1:
+ 121 003e EF91      		push __zero_reg__
+ 122 0040 9F91      		push r0
+ 123 0042 8F91      		in r0,__SREG__
+ 124 0044 0F90      		push r0
+ 125 0046 0FBE      		clr __zero_reg__
+ 126 0048 0F90      		push r24
+ 127 004a 1F90      		push r25
+ 128 004c 1895      		push r30
+ 129               		push r31
+ 130               		push r29
+ 131               		push r28
+ 132               		in r28,__SP_L__
+ 133               		in r29,__SP_H__
+ 134               	/* prologue: Signal */
+  31:day6q1.c      **** 
+  32:day6q1.c      **** 
+  33:day6q1.c      **** // It is recommended to use this coding style to
+  34:day6q1.c      **** // follow better the mixed C-assembly code in the
+  35:day6q1.c      **** // Program Memory window
+  36:day6q1.c      **** //
+  37:day6q1.c      **** void init(void)
+  38:day6q1.c      **** {
+ 135               	sh __zero_reg__
+ 136               		push r0
+ 137               		in r0,__SREG__
+ 138 004e DF93      		push r0
+ 139 0050 CF93      		clr __zero_reg__
+ 140 0052 CDB7      		push r24
+ 141 0054 DEB7      		push r25
+ 142               		push r30
+ 143               		push r31
+  39:day6q1.c      **** 
+  40:day6q1.c      **** 	UBRRH = UBRRH_VALUE;
+ 144               		__vector_11, @function
+ 145               	__vector_11:
+ 147 0058 F0E0      	.LM0:
+ 148 005a 1082      	.LFBB1:
+  41:day6q1.c      ****    UBRRL = UBRRL_VALUE;
+ 149               	bject
+ 151 005c E9E2      	flag:
+ 152 005e F0E0      		.skip 2,0
+ 153 0060 8CE0      		.text
+  42:day6q1.c      ****   	UCSRB |= BV(RXEN) | BV(TXEN) | BV(RXCIE);
+ 155               	),8,8;;",128,0,0,0
+ 158 0066 B0E0      	.global	flag
+ 159 0068 EAE2      	.global	flag
+ 160 006a F0E0      		.section .bss
+ 163 0070 8C93      	flag:
+  43:day6q1.c      **** 	UCSRC |=  BV(URSEL) | BV(UCSZ0) | BV(UCSZ1);
+ 164               	",130,0,0,0
+ 168 0076 E0E4      	.global	flag
+ 169 0078 F0E0      	.global	flag
+ 170 007a 8081      		.section .bss
+ 173               	flag:
+  44:day6q1.c      **** 	
+  45:day6q1.c      **** 	
+  46:day6q1.c      **** }
+ 174               	",130,0,0,0
+ 178 0084 0895      	.global	flag
+ 179               	.global	flag
+ 180               		.section .bss
+ 183               	flag:
+ 184               		.skip 2,0
+ 185               		.text
+  47:day6q1.c      **** void TX(int x)
+  48:day6q1.c      **** {
+ 186               	"__fuse_t:t(5,1)=(5,2)=s2low:(0,11),0,8;high:(0,11),8,8;;",128,0,0,0
+ 189 0086 DF93      	.global	flag
+ 190 0088 CF93      	.global	flag
+ 191 008a 00D0      		.section .bss
+ 194               	flag:
+ 195               		.skip 2,0
+ 196 0090 9A83      		.text
+ 198               	.global	__vector_11
+  49:day6q1.c      ****    while ( !( UCSRA & (1<<UDRE)) );
+ 199               	stabn	162,0,0,0
+ 201 0094 EBE2      	.global	flag
+ 202 0096 F0E0      	.global	flag
+ 203 0098 8081      		.section .bss
+ 206 009e 8072      	flag:
+ 207 00a0 9070      		.skip 2,0
+ 208 00a2 0097      		.text
+  50:day6q1.c      **** 	UDR = x;
+ 210               	),8,8;;",128,0,0,0
+ 213 00a8 F0E0      	.global	flag
+ 214 00aa 8981      	.global	flag
+ 215 00ac 8083      		.section .bss
+  51:day6q1.c      **** 		
+  52:day6q1.c      **** }
+ 217               	/avr/include/avr/fuse.h",130,0,0,0
+ 221 00b2 CF91      	.global	flag
+ 222 00b4 DF91      	.global	flag
+ 223 00b6 0895      		.section .bss
+ 226               	flag:
+ 227               		.skip 2,0
+ 228               		.text
+  53:day6q1.c      **** 
+  54:day6q1.c      **** // ***********************************************************
+  55:day6q1.c      **** // Main program
+  56:day6q1.c      **** //
+  57:day6q1.c      **** int main(void)
+  58:day6q1.c      ****  {
+ 230               	),8,8;;",128,0,0,0
+ 233 00b8 DF93      	.global	flag
+ 234 00ba CF93      	.global	flag
+ 235 00bc CDB7      		.section .bss
+ 238               	flag:
+  59:day6q1.c      **** 		 init();
+ 239               	",130,0,0,0
+  60:day6q1.c      **** 		sei();
+ 242               	(4,6)",128,0,0,0
+  61:day6q1.c      **** 		TX('?');
+ 248               	(4,6)",128,0,0,0
+  62:day6q1.c      ****    while(1)
+  63:day6q1.c      ****     {
+  64:day6q1.c      ****    			if(flag ==1)
+ 255               	stabn	162,0,0,0
+ 261 00d6 01F4      	.global	flag
+  65:day6q1.c      ****    			{
+  66:day6q1.c      ****    				flag = 0;
+ 262               	0
+  67:day6q1.c      ****    				TX(++x);
+ 266               	nt_farptr_t:t(3,2)=(4,6)",128,0,0,0
+ 273 00f2 8091 0000 	.global	flag
+ 274 00f6 9091 0000 	.global	flag
+ 275 00fa 00D0      		.section .bss
+ 278               	flag:
+ 279               		.skip 2,0
+ 280               		.text
+ 282               	.global	__vector_11
+DEFINED SYMBOLS
+                            *ABS*:00000000 day6q1.c
+C:\users\batch2\Temp/ccvILcuw.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccvILcuw.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccvILcuw.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccvILcuw.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccvILcuw.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccvILcuw.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccvILcuw.s:75     .bss:00000000 flag
+C:\users\batch2\Temp/ccvILcuw.s:81     .text:00000000 __vector_11
+                            *COM*:00000002 x
+C:\users\batch2\Temp/ccvILcuw.s:134    .text:0000004e init
+C:\users\batch2\Temp/ccvILcuw.s:185    .text:00000086 TX
+C:\users\batch2\Temp/ccvILcuw.s:229    .text:000000b8 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

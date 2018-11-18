@@ -1,0 +1,278 @@
+   1               		.file	"day4q2.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  70               	.global	flag
+  71               	.global	flag
+  72               		.section .bss
+  75               	flag:
+  76 0000 0000      		.skip 2,0
+  77               		.text
+  79               	.global	__vector_1
+  81               	__vector_1:
+   1:day4q2.c      **** // ***********************************************************
+   2:day4q2.c      **** // Project:
+   3:day4q2.c      **** // Author:
+   4:day4q2.c      **** // Module description:
+   5:day4q2.c      **** // ***********************************************************
+   6:day4q2.c      **** /*Write a code to toggle LED's on PORTB at the rate of 1 sec when 1 is pressed from
+   7:day4q2.c      **** the keyboard and change the rate to 2 sec when 2 is pressed.*/
+   8:day4q2.c      **** #include <avr\io.h>              // Most basic include files
+   9:day4q2.c      **** #include <avr\interrupt.h>       // Add the necessary ones
+  10:day4q2.c      **** #include <avr\signal.h>          // here
+  11:day4q2.c      **** 
+  12:day4q2.c      **** // Define here the global static variables
+  13:day4q2.c      **** //
+  14:day4q2.c      **** int My_global;
+  15:day4q2.c      **** int flag = 0;
+  16:day4q2.c      **** // Interrupt handler example for INT0
+  17:day4q2.c      **** //
+  18:day4q2.c      **** ISR(  INT0_vect )
+  19:day4q2.c      **** {
+  82               	EG__
+  83               		push r0
+  84               		clr __zero_reg__
+  85 0000 1F92      		push r24
+  86 0002 0F92      		push r30
+  87 0004 0FB6      		push r31
+  88 0006 0F92      		push r29
+  89 0008 1124      		push r28
+  90 000a 8F93      		in r28,__SP_L__
+  91 000c EF93      		in r29,__SP_H__
+  92 000e FF93      	/* prologue: Signal */
+  93 0010 DF93      	/* frame size = 0 */
+  95 0014 CDB7      	.LM1:
+  96 0016 DEB7      		ldi r30,lo8(68)
+  97               		ldi r31,hi8(68)
+  98               		st Z,__zero_reg__
+  20:day4q2.c      ****    TCNT2 = 0;
+  99               	o_reg__
+ 100               		push r24
+ 101 0018 E4E4      		push r30
+ 102 001a F0E0      		push r31
+ 103 001c 1082      		push r29
+  21:day4q2.c      **** 	OCR2 = 122;
+ 104               	",36,0,0,__vector_1
+ 105               	.global	__vector_1
+ 107 0020 F0E0      	__vector_1:
+ 109 0024 8083      	.LM0:
+ 110               	.LFBB1:
+  22:day4q2.c      **** }
+ 111               	flag
+ 112               	.global	flag
+ 113 0026 CF91      		.section .bss
+ 116 002c EF91      	flag:
+ 117 002e 8F91      		.skip 2,0
+ 118 0030 0F90      		.text
+ 120 0034 0F90      	.global	__vector_1
+ 122 0038 1895      	__vector_1:
+ 124               	.LM0:
+ 125               	.LFBB1:
+ 126               		push __zero_reg__
+ 127               		push r0
+ 128               		in r0,__SREG__
+  23:day4q2.c      **** ISR(INT1_vect)
+  24:day4q2.c      **** {
+ 129               	object
+ 131               	flag:
+ 132 003a 1F92      		.skip 2,0
+ 133 003c 0F92      		.text
+ 135 0040 0F92      	.global	__vector_1
+ 137 0044 8F93      	__vector_1:
+ 139 0048 FF93      	.LM0:
+ 140 004a DF93      	.LFBB1:
+ 141 004c CF93      		push __zero_reg__
+ 142 004e CDB7      		push r0
+ 143 0050 DEB7      		in r0,__SREG__
+ 144               		push r0
+ 145               		clr __zero_reg__
+  25:day4q2.c      ****    TCNT2 = 0;
+ 146               	.skip 2,0
+ 147               		.text
+ 149 0054 F0E0      	.global	__vector_1
+  26:day4q2.c      **** 	OCR2 = 244;
+ 151               	;;",128,0,0,0
+ 154 005a F0E0      	.global	flag
+ 155 005c 84EF      	.global	flag
+ 156 005e 8083      		.section .bss
+  27:day4q2.c      **** }
+ 158               		162,0,0,0
+ 163 0066 EF91      	.global	flag
+ 164 0068 8F91      	.global	flag
+ 165 006a 0F90      		.section .bss
+ 168 0070 1F90      	flag:
+ 169 0072 1895      		.skip 2,0
+ 170               		.text
+ 172               	.global	__vector_1
+ 174               	__vector_1:
+  28:day4q2.c      **** ISR(   TIMER2_COMP_vect )
+  29:day4q2.c      **** {
+ 176               	h __zero_reg__
+ 177               		push r0
+ 178               		in r0,__SREG__
+ 179 0074 1F92      		push r0
+ 180 0076 0F92      		clr __zero_reg__
+ 181 0078 0FB6      		push r24
+ 182 007a 0F92      		push r30
+ 183 007c 1124      		push r31
+ 184 007e 8F93      		push r29
+ 185 0080 9F93      		push r28
+ 186 0082 EF93      		in r28,__SP_L__
+ 187 0084 FF93      		in r29,__SP_H__
+ 188 0086 DF93      	/* prologue: Signal */
+ 189 0088 CF93      	/* frame size = 0 */
+ 191 008c 0F92      	.LM1:
+ 192 008e CDB7      		ldi r30,lo8(68)
+ 193 0090 DEB7      		ldi r31,hi8(68)
+ 194               		st Z,__zero_reg__
+  30:day4q2.c      ****     	PORTB = !PORTB;
+ 196               	push r31
+ 197               		push r29
+ 198 0092 88E3      		push r28
+ 199 0094 90E0      		in r28,__SP_L__
+ 200 0096 9B83      		in r29,__SP_H__
+ 201 0098 8A83      	/* prologue: Signal */
+ 202 009a E8E3      	/* frame size = 0 */
+ 204 009e 8081      	.LM1:
+ 205 00a0 1982      		ldi r30,lo8(68)
+ 206 00a2 8823      		ldi r31,hi8(68)
+ 207 00a4 01F4      		st Z,__zero_reg__
+ 209 00a8 9983      	.LM2:
+ 210               		ldi r30,lo8(67)
+ 211 00aa 8981      		ldi r31,hi8(67)
+ 212 00ac EA81      		ldi r24,lo8(122)
+ 213 00ae FB81      		st Z,r24
+ 214 00b0 8083      	/* epilogue start */
+  31:day4q2.c      **** 
+  32:day4q2.c      **** }
+ 216               	LM1-.LFBB1
+ 217               	.LM1:
+ 218 00b2 0F90      		ldi r30,lo8(68)
+ 219 00b4 0F90      		ldi r31,hi8(68)
+ 220 00b6 0F90      		st Z,__zero_reg__
+ 222 00ba DF91      	.LM2:
+ 223 00bc FF91      		ldi r30,lo8(67)
+ 224 00be EF91      		ldi r31,hi8(67)
+ 225 00c0 9F91      		ldi r24,lo8(122)
+ 226 00c2 8F91      		st Z,r24
+ 227 00c4 0F90      	/* epilogue start */
+ 229 00c8 0F90      	.LM3:
+ 230 00ca 1F90      		pop r28
+ 231 00cc 1895      		pop r29
+ 232               		pop r31
+ 233               		pop r30
+ 234               		pop r24
+ 235               		pop r0
+ 236               		out __SREG__,r0
+ 237               		pop r0
+  33:day4q2.c      **** 
+  34:day4q2.c      **** // It is recommended to use this coding style to
+  35:day4q2.c      **** // follow better the mixed C-assembly code in the
+  36:day4q2.c      **** // Program Memory window
+  37:day4q2.c      **** //
+  38:day4q2.c      **** 
+  39:day4q2.c      **** 
+  40:day4q2.c      **** // ***********************************************************
+  41:day4q2.c      **** // Main program
+  42:day4q2.c      **** //
+  43:day4q2.c      **** int main(void) {
+ 238               	FBB1
+ 239               	.LM2:
+ 240               		ldi r30,lo8(67)
+ 241 00ce DF93      		ldi r31,hi8(67)
+ 242 00d0 CF93      		ldi r24,lo8(122)
+ 243 00d2 CDB7      		st Z,r24
+ 244 00d4 DEB7      	/* epilogue start */
+ 246               	.LM3:
+  44:day4q2.c      ****    DDRD = 0;
+ 247               	BB1
+ 248               	.LM1:
+ 249 00d6 E1E3      		ldi r30,lo8(68)
+ 250 00d8 F0E0      		ldi r31,hi8(68)
+ 251 00da 1082      		st Z,__zero_reg__
+  45:day4q2.c      ****    PORTD |= (1<<PD2)|(1<<PD3);
+ 252               	o_reg__
+ 253               		push r24
+ 254 00dc A2E3      		push r30
+ 255 00de B0E0      		push r31
+ 256 00e0 E2E3      		push r29
+ 257 00e2 F0E0      		push r28
+ 258 00e4 8081      		in r28,__SP_L__
+ 259 00e6 8C60      		in r29,__SP_H__
+ 260 00e8 8C93      	/* prologue: Signal */
+  46:day4q2.c      **** 	DDRB = 1;
+ 261               	ector_1:
+ 263 00ea E7E3      	.LM0:
+ 264 00ec F0E0      	.LFBB1:
+ 265 00ee 81E0      		push __zero_reg__
+ 266 00f0 8083      		push r0
+  47:day4q2.c      ****     TCNT2 = 0;
+ 267               	ss
+ 270 00f4 F0E0      	flag:
+ 271 00f6 1082      		.skip 2,0
+  48:day4q2.c      ****     OCR2 = 0;
+ 272               	cc/../../avr/include/avr/fuse.h",130,0,0,0
+ 276 00fc 1082      	.global	flag
+  49:day4q2.c      ****     TIMSK = (1<<OCIE2);
+ 277               	al	flag
+ 278               		.section .bss
+ 281 0102 80E8      	flag:
+ 282 0104 8083      		.skip 2,0
+  50:day4q2.c      **** 	TCCR2 = (1<<CS21)|(1<< WGM21)|(1<<CS20);
+ 283               	cc/../../avr/include/avr/fuse.h",130,0,0,0
+ 287 010a 8BE0      	.global	flag
+ 288 010c 8083      	.global	flag
+  51:day4q2.c      **** 	GICR = (1<<INT0)|(1<<INT1);
+ 289               	ion .bss
+ 292 0110 F0E0      	flag:
+ 293 0112 80EC      		.skip 2,0
+ 294 0114 8083      		.text
+  52:day4q2.c      **** 	MCUCR  |= (1 << ISC11)|(1<<ISC01)|(1<<SE);
+ 295               	/avr/include/avr/fuse.h",130,0,0,0
+ 299 011a E5E5      	.global	flag
+ 300 011c F0E0      	.global	flag
+ 301 011e 8081      		.section .bss
+  53:day4q2.c      **** 	sei();
+ 304               	kip 2,0
+ 305               		.text
+ 307               	.global	__vector_1
+ 309               	__vector_1:
+ 311               	.LM0:
+  54:day4q2.c      ****    while(1)
+  55:day4q2.c      ****    {
+  56:day4q2.c      **** 	     asm("SLEEP");
+ 312               	
+ 313               	.global	flag
+ 314               	.global	flag
+ 315               		.section .bss
+ 318               	flag:
+ 319 0128 00C0      		.skip 2,0
+ 320               		.text
+ 322               	.global	__vector_1
+ 324               	__vector_1:
+ 326               	.LM0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 day4q2.c
+C:\users\batch2\Temp/ccinlYLy.s:2      *ABS*:0000003f __SREG__
+C:\users\batch2\Temp/ccinlYLy.s:3      *ABS*:0000003e __SP_H__
+C:\users\batch2\Temp/ccinlYLy.s:4      *ABS*:0000003d __SP_L__
+C:\users\batch2\Temp/ccinlYLy.s:5      *ABS*:00000034 __CCP__
+C:\users\batch2\Temp/ccinlYLy.s:6      *ABS*:00000000 __tmp_reg__
+C:\users\batch2\Temp/ccinlYLy.s:7      *ABS*:00000001 __zero_reg__
+C:\users\batch2\Temp/ccinlYLy.s:75     .bss:00000000 flag
+C:\users\batch2\Temp/ccinlYLy.s:81     .text:00000000 __vector_1
+C:\users\batch2\Temp/ccinlYLy.s:128    .text:0000003a __vector_2
+C:\users\batch2\Temp/ccinlYLy.s:175    .text:00000074 __vector_3
+C:\users\batch2\Temp/ccinlYLy.s:237    .text:000000ce main
+                            *COM*:00000002 My_global
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

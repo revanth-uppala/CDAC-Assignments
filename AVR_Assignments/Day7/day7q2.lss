@@ -1,0 +1,176 @@
+
+day7q2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000de  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000002  00800060  000000de  00000152  2**0
+                  ALLOC
+  2 .stab         00000360  00000000  00000000  00000154  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      0000066c  00000000  00000000  000004b4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2c c0       	rjmp	.+88     	; 0x5c <__bad_interrupt>
+   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1f c0       	rjmp	.+62     	; 0x5e <__vector_15>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	ee ed       	ldi	r30, 0xDE	; 222
+  3a:	f0 e0       	ldi	r31, 0x00	; 0
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <.do_copy_data_start>
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a0 36       	cpi	r26, 0x60	; 96
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <.do_copy_data_loop>
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a0 e6       	ldi	r26, 0x60	; 96
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a2 36       	cpi	r26, 0x62	; 98
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	36 d0       	rcall	.+108    	; 0xc6 <main>
+  5a:	3f c0       	rjmp	.+126    	; 0xda <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <__vector_15>:
+// It is recommended to use this coding style to
+// follow better the mixed C-assembly code in the
+// Program Memory window
+//
+ISR(EE_RDY_vect)
+{
+  5e:	1f 92       	push	r1
+  60:	0f 92       	push	r0
+  62:	0f b6       	in	r0, 0x3f	; 63
+  64:	0f 92       	push	r0
+  66:	11 24       	eor	r1, r1
+  68:	8f 93       	push	r24
+  6a:	9f 93       	push	r25
+  6c:	af 93       	push	r26
+  6e:	bf 93       	push	r27
+  70:	ef 93       	push	r30
+  72:	ff 93       	push	r31
+  74:	df 93       	push	r29
+  76:	cf 93       	push	r28
+  78:	cd b7       	in	r28, 0x3d	; 61
+  7a:	de b7       	in	r29, 0x3e	; 62
+	EEAR = 0X001;
+  7c:	ee e3       	ldi	r30, 0x3E	; 62
+  7e:	f0 e0       	ldi	r31, 0x00	; 0
+  80:	81 e0       	ldi	r24, 0x01	; 1
+  82:	90 e0       	ldi	r25, 0x00	; 0
+  84:	91 83       	std	Z+1, r25	; 0x01
+  86:	80 83       	st	Z, r24
+	EEDR = 0x01;
+  88:	ed e3       	ldi	r30, 0x3D	; 61
+  8a:	f0 e0       	ldi	r31, 0x00	; 0
+  8c:	81 e0       	ldi	r24, 0x01	; 1
+  8e:	80 83       	st	Z, r24
+	EECR |= (1<<EEMWE) ;
+  90:	ac e3       	ldi	r26, 0x3C	; 60
+  92:	b0 e0       	ldi	r27, 0x00	; 0
+  94:	ec e3       	ldi	r30, 0x3C	; 60
+  96:	f0 e0       	ldi	r31, 0x00	; 0
+  98:	80 81       	ld	r24, Z
+  9a:	84 60       	ori	r24, 0x04	; 4
+  9c:	8c 93       	st	X, r24
+//	EECR &= ~(1<<EEWE);
+//	asm("nop");
+	EECR |= (1<<EEWE);
+  9e:	ac e3       	ldi	r26, 0x3C	; 60
+  a0:	b0 e0       	ldi	r27, 0x00	; 0
+  a2:	ec e3       	ldi	r30, 0x3C	; 60
+  a4:	f0 e0       	ldi	r31, 0x00	; 0
+  a6:	80 81       	ld	r24, Z
+  a8:	82 60       	ori	r24, 0x02	; 2
+  aa:	8c 93       	st	X, r24
+	
+}
+  ac:	cf 91       	pop	r28
+  ae:	df 91       	pop	r29
+  b0:	ff 91       	pop	r31
+  b2:	ef 91       	pop	r30
+  b4:	bf 91       	pop	r27
+  b6:	af 91       	pop	r26
+  b8:	9f 91       	pop	r25
+  ba:	8f 91       	pop	r24
+  bc:	0f 90       	pop	r0
+  be:	0f be       	out	0x3f, r0	; 63
+  c0:	0f 90       	pop	r0
+  c2:	1f 90       	pop	r1
+  c4:	18 95       	reti
+
+000000c6 <main>:
+
+
+// ***********************************************************
+// Main program
+//
+int main(void) {
+  c6:	df 93       	push	r29
+  c8:	cf 93       	push	r28
+  ca:	cd b7       	in	r28, 0x3d	; 61
+  cc:	de b7       	in	r29, 0x3e	; 62
+
+   // while(! (EECR &(1<<EEWE) ));
+   // int x;
+    EECR=(1<<EERIE);
+  ce:	ec e3       	ldi	r30, 0x3C	; 60
+  d0:	f0 e0       	ldi	r31, 0x00	; 0
+  d2:	88 e0       	ldi	r24, 0x08	; 8
+  d4:	80 83       	st	Z, r24
+    sei();
+  d6:	78 94       	sei
+  d8:	ff cf       	rjmp	.-2      	; 0xd8 <main+0x12>
+
+000000da <_exit>:
+  da:	f8 94       	cli
+
+000000dc <__stop_program>:
+  dc:	ff cf       	rjmp	.-2      	; 0xdc <__stop_program>
